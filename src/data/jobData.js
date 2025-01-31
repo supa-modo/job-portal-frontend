@@ -1,7 +1,7 @@
 export const jobData = {
   id: "job-123",
   title: "Senior Public Relations Officer",
-  department: "Engineering",
+  department: "Communications",
   location: "Nairobi, Kenya",
   type: "Full-time",
   salary: "KES 120,000 - KES 160,000",

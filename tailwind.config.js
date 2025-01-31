@@ -5,7 +5,7 @@ module.exports = {
       colors: {
         sidebar: "#296249",
         "gray-light": "#F8F9FA",
-        button: "#2a645d",
+        button: "#356966",
         primary: "#2f7053",
         "primary-dark": "#22312f",
         "primary-hover": "#347c73",

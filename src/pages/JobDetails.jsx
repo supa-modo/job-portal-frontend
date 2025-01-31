@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Building, ChevronLeft, MapPin, User } from "lucide-react";
-import CandidatesTab from "../components/JobDetails Tabs/CandidatesTab";
 import JobInfoTab from "../components/JobDetails Tabs/JobInfoTab";
 import JobDetailsCalendar from "../components/JobDetails Tabs/JobDetailsCalendar";
 import { jobData } from "../data/jobData";
@@ -20,10 +19,17 @@ import { MdLocationPin } from "react-icons/md";
 import { TbActivity, TbAutomation, TbBriefcaseFilled } from "react-icons/tb";
 import { BsCardChecklist } from "react-icons/bs";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
+import candidates from "../data/Candidates.json";
+import CandidatesTab from "../components/JobDetails Tabs/CandidatesTab";
 
 const JobDetails = () => {
   const [activeTab, setActiveTab] = useState("candidates");
   const navigate = useNavigate();
+
+  const handleViewCandidate = (candidate) => {
+    // Your view logic here
+    console.log("Viewing candidate:", candidate);
+  };
 
   const tabItems = [
     {
@@ -47,7 +53,12 @@ const JobDetails = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "candidates":
-        return <CandidatesTab candidates={jobData.candidates} />;
+        return (
+          <CandidatesTab
+            candidates={candidates}
+            onViewCandidate={handleViewCandidate}
+          />
+        );
       case "job-info":
         return <JobInfoTab jobData={jobData} onUpdate={console.log} />;
       case "calendar":
@@ -81,7 +92,7 @@ const JobDetails = () => {
   };
 
   return (
-    <div className="px-8 py-6 mx-auto">
+    <div className="px-10 py-6 mx-auto">
       <button
         className="flex items-center text-gray-600 hover:text-amber-600 mb-3"
         onClick={() => {
@@ -107,7 +118,7 @@ const JobDetails = () => {
           </div>
           <div className="flex items-center text-gray-500">
             <RiAdminLine className="w-5 h-5 mr-2" />
-            <span>Created by: </span>
+            <span>Posted by: </span>
             <span className="font-bold text-amber-600 font-nunito pl-3 underline underline-offset-4">
               {jobData.contactPerson.name}
             </span>

@@ -1,52 +1,61 @@
-import React, { useState } from "react";
+import { InitialsAvatar } from "../../utils/Initials";
 import Table from "../Table";
 
-const CandidatesTab = ({ candidates }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(candidates.length / itemsPerPage);
-
+const CandidatesTab = ({ candidates, onViewCandidate }) => {
   const columns = [
     {
-      key: "name",
-      label: "Candidate",
+      key: "applicant",
+      label: "Applicant",
+      render: (item) => <InitialsAvatar name={item.name} email={item.email} />,
+    },
+    {
+      key: "appliedDate",
+      label: "Application_Date",
+      render: (item) => new Date(item.appliedDate).toLocaleDateString(),
+    },
+    {
+      key: "nationality",
+      label: "Nationality",
+    },
+    {
+      key: "experience",
+      label: "Experience",
+    },
+    {
+      key: "status",
+      label: "Status",
       render: (item) => (
-        <div className="flex items-center">
-          <img src={item.avatar} alt="" className="w-8 h-8 rounded-full mr-3" />
-          <div>
-            <div className="font-medium">{item.name}</div>
-            <div className="text-sm text-gray-500">{item.email}</div>
-          </div>
-        </div>
+        <span
+          className={`px-3.5 py-1 rounded-lg text-xs font-medium ${
+            item.status === "Accepted"
+              ? "bg-green-200 text-green-800"
+              : item.status === "Shortlisted"
+              ? "bg-blue-200 text-blue-800"
+              : item.status === "Interview"
+              ? "bg-blue-200 text-blue-800"
+              : item.status === "Pending"
+              ? "bg-yellow-200 text-yellow-800"
+              : "bg-red-200 text-red-800"
+          }`}
+        >
+          {item.status}
+        </span>
       ),
     },
-    { key: "status", label: "Status" },
-    { key: "stage", label: "Stage" },
-    { key: "appliedDate", label: "Applied Date" },
-    { key: "experience", label: "Experience" },
     {
-      key: "actions",
-      label: "Actions",
-      render: () => (
-        <button className="text-blue-600 hover:text-blue-800">
-          View Details
-        </button>
-      ),
+      key: "notes",
+      label: "Notes",
     },
   ];
-
-  const paginatedData = candidates.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   return (
     <Table
       columns={columns}
-      data={paginatedData}
-      currentPage={currentPage}
-      totalPages={totalPages}
-      onPageChange={setCurrentPage}
+      data={candidates}
+      onRowClick={onViewCandidate}
+      additionalActions={{
+        view: (candidate) => onViewCandidate(candidate),
+      }}
     />
   );
 };

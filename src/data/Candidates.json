@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "name": "Emily Rodriguez",
+    "email": "emily.rodriguez@tech.com",
+    "appliedDate": "2024-01-15",
+    "nationality": "United States",
+    "experience": "5 years",
+    "status": "Shortlisted",
+    "notes": "Exceptional candidate with strong backend development skills"
+  },
+  {
+    "id": 2,
+    "name": "Raj Patel",
+    "email": "raj.patel@innovate.io",
+    "appliedDate": "2024-01-22",
+    "nationality": "India",
+    "experience": "7 years",
+    "status": "Pending",
+    "notes": "Impressive machine learning background"
+  },
+  {
+    "id": 3,
+    "name": "Sophie Chen",
+    "email": "sophie.chen@global.tech",
+    "appliedDate": "2024-01-10",
+    "nationality": "Canada",
+    "experience": "3 years",
+    "status": "Rejected",
+    "notes": "Junior level, potential for future roles"
+  },
+  {
+    "id": 4,
+    "name": "Mohammed Al-Fayed",
+    "email": "mohammed.alfayed@digital.com",
+    "appliedDate": "2024-01-18",
+    "nationality": "United Arab Emirates",
+    "experience": "6 years",
+    "status": "Interview",
+    "notes": "Expert in cloud architecture and DevOps"
+  },
+  {
+    "id": 5,
+    "name": "Isabella Santos",
+    "email": "isabella.santos@solution.net",
+    "appliedDate": "2024-01-20",
+    "nationality": "Brazil",
+    "experience": "4 years",
+    "status": "Pending",
+    "notes": "Strong frontend development skills"
+  },
+  {
+    "id": 6,
+    "name": "Alex Johnson",
+    "email": "alex.johnson@enterprise.org",
+    "appliedDate": "2024-01-05",
+    "nationality": "United Kingdom",
+    "experience": "8 years",
+    "status": "Accepted",
+    "notes": "Senior leadership experience in tech teams"
+  },
+  {
+    "id": 7,
+    "name": "Emma Kowalski",
+    "email": "emma.kowalski@research.com",
+    "appliedDate": "2024-01-25",
+    "nationality": "Poland",
+    "experience": "2 years",
+    "status": "Rejected",
+    "notes": "Entry-level position, requires more experience"
+  },
+  {
+    "id": 8,
+    "name": "David Kim",
+    "email": "david.kim@startup.tech",
+    "appliedDate": "2024-01-12",
+    "nationality": "South Korea",
+    "experience": "5 years",
+    "status": "Pending",
+    "notes": "Strong in mobile app development"
+  },
+  {
+    "id": 9,
+    "name": "Maria Garcia",
+    "email": "maria.garcia@global.io",
+    "appliedDate": "2024-01-17",
+    "nationality": "Spain",
+    "experience": "6 years",
+    "status": "Interview",
+    "notes": "Exceptional UI/UX design background"
+  },
+  {
+    "id": 10,
+    "name": "Ahmed Hassan",
+    "email": "ahmed.hassan@connect.net",
+    "appliedDate": "2024-01-08",
+    "nationality": "Egypt",
+    "experience": "4 years",
+    "status": "Rejected",
+    "notes": "Needs improvement in communication skills"
+  },
+  {
+    "id": 11,
+    "name": "Yuki Tanaka",
+    "email": "yuki.tanaka@innovation.jp",
+    "appliedDate": "2024-01-23",
+    "nationality": "Japan",
+    "experience": "7 years",
+    "status": "Pending",
+    "notes": "Expert in AI and machine learning"
+  },
+  {
+    "id": 12,
+    "name": "Carlos Mendoza",
+    "email": "carlos.mendoza@digital.lat",
+    "appliedDate": "2024-01-16",
+    "nationality": "Mexico",
+    "experience": "5 years",
+    "status": "Shortlisted",
+    "notes": "Strong background in cybersecurity"
+  }
+]
