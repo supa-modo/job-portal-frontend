@@ -1,28 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  HomeIcon,
-  InboxIcon,
-  CalendarIcon,
-  BriefcaseIcon,
-  UserGroupIcon,
-  UserIcon,
-  ChartBarIcon,
-  Cog6ToothIcon,
-} from "@heroicons/react/24/outline";
+import { ChartBarIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 import {
   TbBriefcase,
-  TbBriefcaseFilled,
   TbCalendarCheck,
-  TbChevronLeft,
-  TbChevronRight,
+  TbLayoutSidebar,
+  TbLayoutSidebarFilled,
   TbWorld,
 } from "react-icons/tb";
-import { MdSpaceDashboard } from "react-icons/md";
-import { IoIosCalendar } from "react-icons/io";
-import { FaCalendar, FaRegCalendarAlt } from "react-icons/fa";
-import { FaBriefcase } from "react-icons/fa6";
-import { HiUserGroup } from "react-icons/hi";
+import { MdLogout, MdSpaceDashboard } from "react-icons/md";
+import { GoSidebarCollapse, GoSidebarExpand } from "react-icons/go";
 import { HiMiniUserGroup } from "react-icons/hi2";
 import { PiUserCheckDuotone } from "react-icons/pi";
 
@@ -32,7 +19,7 @@ const Sidebar = () => {
 
   const menuItems = [
     {
-      category: "",
+      category: "HOME",
       items: [
         {
           id: "dashboard",
@@ -101,14 +88,14 @@ const Sidebar = () => {
       {/* Collapse Button */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className={`absolute top-4 transition-all duration-300 bg-gray-700 py-2 px-1 rounded-lg hover:bg-gray-600 ${
+        className={`absolute top-4 transition-all duration-300 py-2 px-2 rounded-lg hover:bg-gray-500 ${
           isCollapsed ? "left-1/2 -translate-x-1/2" : "right-1"
         }`}
       >
         {isCollapsed ? (
-          <TbChevronRight size={20} />
+          <TbLayoutSidebarFilled className="" size={28} />
         ) : (
-          <TbChevronLeft size={20} />
+          <TbLayoutSidebar size={28} />
         )}
       </button>
 
@@ -122,7 +109,7 @@ const Sidebar = () => {
             }`}
           >
             {!isCollapsed ? (
-              <div className="mb-6 flex items-center space-x-4 border-b pb-4">
+              <div className="mb-10 flex items-center space-x-4 border-b border-gray-500 pb-4">
                 <img src="/joblogo.jpg" alt="Logo" className="h-14" />
                 <span className="font-semibold uppercase">
                   Job Listings Recruitment
@@ -144,7 +131,7 @@ const Sidebar = () => {
             {menuItems.map((item) => (
               <div key={item.category || item.id} className="mb-6">
                 {item.category && !isCollapsed && (
-                  <div className="text-gray-400 text-xs mb-2 px-4">
+                  <div className="text-gray-400  text-xs mb-3 px-4">
                     {item.category}
                   </div>
                 )}
@@ -154,7 +141,7 @@ const Sidebar = () => {
                   return (
                     <div key={menuItem.id} className="group relative">
                       {isCollapsed && (
-                        <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white  text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                           {menuItem.label}
                         </div>
                       )}
@@ -165,13 +152,17 @@ const Sidebar = () => {
                           isCollapsed ? "justify-center" : "px-4"
                         } py-2 rounded-lg mb-2 ${
                           activeItem === menuItem.id
-                            ? "bg-blue-600"
-                            : "hover:bg-gray-700"
+                            ? "bg-amber-600"
+                            : "hover:bg-gray-500"
                         } transition-all duration-200`}
                         onClick={() => setActiveItem(menuItem.id)}
                       >
                         <Icon className={`h-6 w-6 ${!isCollapsed && "mr-3"}`} />
-                        {!isCollapsed && <span>{menuItem.label}</span>}
+                        {!isCollapsed && (
+                          <span className="font-semibold font-nunito">
+                            {menuItem.label}
+                          </span>
+                        )}
                       </Link>
                     </div>
                   );
@@ -182,10 +173,14 @@ const Sidebar = () => {
         </div>
 
         {/* Logout Button - Always at the Bottom */}
-        <div className="mt-auto">
-          <button className="flex items-center w-full px-4 py-2 text-red-500 hover:bg-gray-700 rounded-lg">
-            <UserIcon className="h-6 w-6 mr-3" />
-            {!isCollapsed && <span>Logout</span>}
+        <div className=" mt-auto border-t border-gray-500 pt-3">
+          <button
+            className={`flex items-center ${
+              isCollapsed ? "justify-center" : "px-4"
+            } w-full  py-2 text-red-400 hover:bg-red-300 hover:text-red-600 rounded-lg transition-all duration-200`}
+          >
+            <MdLogout className={`h-6 w-6 ${!isCollapsed && "mr-3"}`} />
+            {!isCollapsed && <span className="font-semibold">Logout</span>}
           </button>
         </div>
       </div>

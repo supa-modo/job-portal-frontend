@@ -6,7 +6,7 @@ import {
 
 const Header = () => {
   return (
-    <div className="h-16 flex items-center justify-between px-6 border-b bg-white">
+    <div className="h-16 flex items-center justify-between px-6 shadow-sm border-b bg-white">
       <div className="flex items-center flex-1">
         <div className="relative w-64">
           <input
