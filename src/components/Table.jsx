@@ -56,3 +56,5 @@ const Table = ({ columns, data, currentPage, totalPages, onPageChange }) => {
     </div>
   );
 };
+
+export default Table;
