@@ -1,25 +1,47 @@
 import React, { useState } from "react";
 import { Building, ChevronLeft, MapPin, User } from "lucide-react";
-import CandidatesTab from "../components/CandidatesTab";
-import JobInfoTab from "../components/JobInfoTab";
-import JobDetailsCalendar from "../components/JobDetailsCalendar";
+import CandidatesTab from "../components/JobDetails Tabs/CandidatesTab";
+import JobInfoTab from "../components/JobDetails Tabs/JobInfoTab";
+import JobDetailsCalendar from "../components/JobDetails Tabs/JobDetailsCalendar";
 import { jobData } from "../data/jobData";
-import ScoreCardTab from "../components/ScoreCardTab";
-import ActivityTab from "../components/ActivityTab";
-import ApplicationFormTab from "../components/ApplicationFormTab";
-import AutomationTab from "../components/AutomationTab";
+import ScoreCardTab from "../components/JobDetails Tabs/ScoreCardTab";
+import ActivityTab from "../components/JobDetails Tabs/ActivityTab";
+import ApplicationFormTab from "../components/JobDetails Tabs/ApplicationFormTab";
+import AutomationTab from "../components/JobDetails Tabs/AutomationTab";
+import { RiAdminLine } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import {
+  PiBuildingApartmentDuotone,
+  PiBuildingDuotone,
+  PiUsersThreeDuotone,
+} from "react-icons/pi";
+import { LuCalendarPlus } from "react-icons/lu";
+import { MdLocationPin } from "react-icons/md";
+import { TbActivity, TbAutomation, TbBriefcaseFilled } from "react-icons/tb";
+import { BsCardChecklist } from "react-icons/bs";
+import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 
 const JobDetails = () => {
   const [activeTab, setActiveTab] = useState("candidates");
+  const navigate = useNavigate();
 
   const tabItems = [
-    { id: "candidates", label: "Candidates", count: jobData.candidates.length },
-    { id: "job-info", label: "Job Info" },
-    { id: "calendar", label: "Calendar" },
-    { id: "score-card", label: "Score Card" },
-    { id: "activity", label: "Activity" },
-    { id: "application-form", label: "Application Form" },
-    { id: "automation", label: "Automation", count: "5" },
+    {
+      id: "candidates",
+      label: "Candidates",
+      count: jobData.candidates.length,
+      icon: PiUsersThreeDuotone,
+    },
+    { id: "job-info", label: "Job Info", icon: TbBriefcaseFilled },
+    { id: "calendar", label: "Calendar", icon: LuCalendarPlus },
+    { id: "score-card", label: "Score Card", icon: BsCardChecklist },
+    { id: "activity", label: "Activity", icon: TbActivity },
+    {
+      id: "application-form",
+      label: "Application Form",
+      icon: HiOutlineClipboardDocumentList,
+    },
+    { id: "automation", label: "Automation", count: "5", icon: TbAutomation },
   ];
 
   const renderTabContent = () => {
@@ -59,47 +81,56 @@ const JobDetails = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <button className="flex items-center text-gray-600 hover:text-amber-600 mb-6">
+    <div className="px-8 py-6 mx-auto">
+      <button
+        className="flex items-center text-gray-600 hover:text-amber-600 mb-3"
+        onClick={() => {
+          navigate("/jobs");
+        }}
+      >
         <ChevronLeft className="w-5 h-5 mr-2" />
         <span className="font-medium">Back to Jobs</span>
       </button>
 
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">
+      <div className="bg-white rounded-xl shadow p-6 mb-10">
+        <h1 className="text-3xl font-extrabold font-sans tracking- text-primary mb-6">
           {jobData.title}
         </h1>
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-6 font-nunito text-[0.94rem] tracking-tight font-semibold">
           <div className="flex items-center text-gray-500">
-            <Building className="w-5 h-5 mr-2" />
+            <PiBuildingDuotone className="w-5 h-5 mr-2" />
             <span>{jobData.department}</span>
           </div>
           <div className="flex items-center text-gray-500">
-            <MapPin className="w-5 h-5 mr-2" />
+            <MdLocationPin className="w-5 h-5 mr-2" />
             <span>{jobData.location}</span>
           </div>
           <div className="flex items-center text-gray-500">
-            <User className="w-5 h-5 mr-2" />
-            <span>{jobData.contactPerson.name}</span>
+            <RiAdminLine className="w-5 h-5 mr-2" />
+            <span>Created by: </span>
+            <span className="font-bold text-amber-600 font-nunito pl-3 underline underline-offset-4">
+              {jobData.contactPerson.name}
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="border-b border-gray-200 mb-6">
-        <div className="flex items-center space-x-6">
+      <div className="border-b border-gray-300 mb-6">
+        <div className="flex items-center font-nunito font-semibold space-x-6">
           {tabItems.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center space-x-2 pb-4 px-3 relative ${
                 activeTab === tab.id
-                  ? "text-gray-900 font-medium border-b-2 border-amber-600"
+                  ? "text-gray-600 font-bold border-b-[3px] border-gray-600"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
+              <tab.icon className="w-5 h-5" />
               <span>{tab.label}</span>
               {tab.count && (
-                <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">
+                <span className="bg-gray-300 text-gray-600 font-open text-[0.8rem] px-2 py-0.5 rounded-lg">
                   {tab.count}
                 </span>
               )}

@@ -14,7 +14,7 @@ import { HiMiniUserGroup } from "react-icons/hi2";
 import { PiUserCheckDuotone } from "react-icons/pi";
 
 const Sidebar = () => {
-  const [activeItem, setActiveItem] = useState("employees");
+  const [activeItem, setActiveItem] = useState("dashboard");
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const menuItems = [
@@ -27,7 +27,6 @@ const Sidebar = () => {
           label: "Dashboard",
           link: "/",
         },
-        // { id: "inbox", icon: InboxIcon, label: "Inbox", link: "/inbox" },
         {
           id: "calendar",
           icon: TbCalendarCheck,

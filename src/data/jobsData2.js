@@ -1,0 +1,86 @@
+export const jobsData = [
+  {
+    id: 1,
+    title: "Senior Product Designer",
+    department: "Communications",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga quaerat autem possimus nobis, provident accusamus neque veniam dolorum vel harum? Delectus sint, ipsam veniam deleniti labore eveniet explicabo incidunt reiciendis? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore ea consectetur perspiciatis velit voluptas quasi dolores facilis! Reprehenderit distinctio vitae odit in veritatis, quibusdam aperiam possimus, perspiciatis asperiores at quod?",
+    location: "Nairobi, Kenya",
+    type: "Contract",
+    status: "Draft",
+    totalCandidates: 57,
+    percentage: 35,
+  },
+  {
+    id: 2,
+    title: "Principal Human Resource Officer",
+    department: "Human Resource",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga quaerat autem possimus nobis, provident accusamus neque veniam dolorum vel harum? Delectus sint, ipsam veniam deleniti labore eveniet explicabo incidunt reiciendis? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore ea consectetur perspiciatis velit voluptas quasi dolores facilis! Reprehenderit distinctio vitae odit in veritatis, quibusdam aperiam possimus, perspiciatis asperiores at quod?",
+    location: "Arusha, Tanzania",
+    type: "Temporary",
+    status: "Published",
+    totalCandidates: 13,
+    percentage: 95,
+  },
+  {
+    id: 3,
+    title: "IT Hardware Specialist",
+    department: "ICT",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga quaerat autem possimus nobis, provident accusamus neque veniam dolorum vel harum? Delectus sint, ipsam veniam deleniti labore eveniet explicabo incidunt reiciendis? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore ea consectetur perspiciatis velit voluptas quasi dolores facilis! Reprehenderit distinctio vitae odit in veritatis, quibusdam aperiam possimus, perspiciatis asperiores at quod?",
+    location: "Arusha, Tanzania",
+    type: "Temporary",
+    status: "Published",
+    totalCandidates: 59,
+    percentage: 75,
+  },
+  {
+    id: 4,
+    title: "International Relations Officer",
+    department: "Public Relations",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga quaerat autem possimus nobis, provident accusamus neque veniam dolorum vel harum? Delectus sint, ipsam veniam deleniti labore eveniet explicabo incidunt reiciendis? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore ea consectetur perspiciatis velit voluptas quasi dolores facilis! Reprehenderit distinctio vitae odit in veritatis, quibusdam aperiam possimus, perspiciatis asperiores at quod?",
+    location: "Arusha, Tanzania",
+    type: "Temporary",
+    status: "Published",
+    totalCandidates: 56,
+    percentage: 25,
+  },
+  {
+    id: 5,
+    title: "Senior Accountant",
+    department: "Finance",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga quaerat autem possimus nobis, provident accusamus neque veniam dolorum vel harum? Delectus sint, ipsam veniam deleniti labore eveniet explicabo incidunt reiciendis? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore ea consectetur perspiciatis velit voluptas quasi dolores facilis! Reprehenderit distinctio vitae odit in veritatis, quibusdam aperiam possimus, perspiciatis asperiores at quod?",
+    location: "Arusha, Tanzania",
+    type: "Temporary",
+    status: "Published",
+    totalCandidates: 14,
+    percentage: 60,
+  },
+  {
+    id: 6,
+    title: "Senior Administration Officer",
+    department: "Administration",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga quaerat autem possimus nobis, provident accusamus neque veniam dolorum vel harum? Delectus sint, ipsam veniam deleniti labore eveniet explicabo incidunt reiciendis? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore ea consectetur perspiciatis velit voluptas quasi dolores facilis! Reprehenderit distinctio vitae odit in veritatis, quibusdam aperiam possimus, perspiciatis asperiores at quod?",
+    location: "Arusha, Tanzania",
+    type: "Temporary",
+    status: "Published",
+    totalCandidates: 25,
+    percentage: 75,
+  },
+  {
+    id: 7,
+    title: "Public Relations Officer",
+    department: "Administration",
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga quaerat autem possimus nobis, provident accusamus neque veniam dolorum vel harum? Delectus sint, ipsam veniam deleniti labore eveniet explicabo incidunt reiciendis? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore ea consectetur perspiciatis velit voluptas quasi dolores facilis! Reprehenderit distinctio vitae odit in veritatis, quibusdam aperiam possimus, perspiciatis asperiores at quod?",
+    location: "Arusha, Tanzania",
+    type: "Temporary",
+    status: "Published",
+    totalCandidates: 108,
+    percentage: 45,
+  },
+];

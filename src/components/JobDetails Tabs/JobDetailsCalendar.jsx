@@ -195,7 +195,7 @@ const JobDetailsCalendar = () => {
             {timeSlots.slice(9, 17).map((time) => (
               <div
                 key={time}
-                className="h-16 border-b p-2 text-sm text-gray-500"
+                className="h-28 border-b p-2 text-sm text-gray-500"
               >
                 {time}
               </div>
@@ -204,7 +204,7 @@ const JobDetailsCalendar = () => {
           {days.map((day) => (
             <div key={day.date} className="border-r">
               {timeSlots.slice(9, 17).map((_, idx) => (
-                <div key={idx} className="h-16 border-b">
+                <div key={idx} className="h-28 border-b">
                   <div className="border-t border-gray-100 border-dashed relative top-1/2"></div>
                 </div>
               ))}

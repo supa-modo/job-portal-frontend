@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Table from "./Table";
+import Table from "../Table";
 
 const CandidatesTab = ({ candidates }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,6 +50,5 @@ const CandidatesTab = ({ candidates }) => {
     />
   );
 };
-
 
 export default CandidatesTab;
