@@ -3,6 +3,7 @@ import { Building, ChevronLeft, MapPin, User } from "lucide-react";
 import JobInfoTab from "../components/JobDetails Tabs/JobInfoTab";
 import JobDetailsCalendar from "../components/JobDetails Tabs/JobDetailsCalendar";
 import { jobData } from "../data/jobData";
+import {sampleJob} from "../data/JobInfo";
 import ScoreCardTab from "../components/JobDetails Tabs/ScoreCardTab";
 import ActivityTab from "../components/JobDetails Tabs/ActivityTab";
 import ApplicationFormTab from "../components/JobDetails Tabs/ApplicationFormTab";
@@ -60,7 +61,7 @@ const JobDetails = () => {
           />
         );
       case "job-info":
-        return <JobInfoTab jobData={jobData} onUpdate={console.log} />;
+        return <JobInfoTab job={sampleJob} />;
       case "calendar":
         return <JobDetailsCalendar interviews={jobData.interviews} />;
       case "score-card":
