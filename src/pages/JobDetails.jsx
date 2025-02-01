@@ -3,7 +3,7 @@ import { Building, ChevronLeft, MapPin, User } from "lucide-react";
 import JobInfoTab from "../components/JobDetails Tabs/JobInfoTab";
 import JobDetailsCalendar from "../components/JobDetails Tabs/JobDetailsCalendar";
 import { jobData } from "../data/jobData";
-import {sampleJob} from "../data/JobInfo";
+import { sampleJob } from "../data/JobInfo";
 import ScoreCardTab from "../components/JobDetails Tabs/ScoreCardTab";
 import ActivityTab from "../components/JobDetails Tabs/ActivityTab";
 import ApplicationFormTab from "../components/JobDetails Tabs/ApplicationFormTab";
@@ -11,18 +11,23 @@ import AutomationTab from "../components/JobDetails Tabs/AutomationTab";
 import { RiAdminLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import {
-  PiBuildingApartmentDuotone,
   PiBuildingDuotone,
   PiShareFatDuotone,
   PiUsersThreeDuotone,
 } from "react-icons/pi";
 import { LuCalendarPlus } from "react-icons/lu";
 import { MdLocationPin } from "react-icons/md";
-import { TbActivity, TbAutomation, TbBriefcase, TbBriefcaseFilled } from "react-icons/tb";
+import {
+  TbActivity,
+  TbAutomation,
+  TbBriefcase,
+  TbBriefcaseFilled,
+} from "react-icons/tb";
 import { BsCardChecklist } from "react-icons/bs";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import candidates from "../data/Candidates.json";
 import CandidatesTab from "../components/JobDetails Tabs/CandidatesTab";
+import Calendar from "../components/CalendarEventModal";
 
 const JobDetails = () => {
   const [activeTab, setActiveTab] = useState("candidates");
@@ -64,7 +69,7 @@ const JobDetails = () => {
       case "job-info":
         return <JobInfoTab job={sampleJob} />;
       case "calendar":
-        return <JobDetailsCalendar interviews={jobData.interviews} />;
+        return <Calendar />;
       case "score-card":
         return <ScoreCardTab scoreCard={jobData.scoreCard} />;
       case "activity":
@@ -107,13 +112,13 @@ const JobDetails = () => {
 
       <div className="bg-white rounded-xl shadow p-6 mb-10">
         <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-extrabold font-sans tracking- text-primary">
-          {jobData.title}
-        </h1>
-        <button className="flex items-center space-x-2 bg-primary font-semibold text-white py-2 mr-4 px-4 rounded-md">
-          <PiShareFatDuotone size={22}/>
-          <span>Share & Promote</span>
-        </button>
+          <h1 className="text-3xl font-extrabold font-sans tracking- text-primary">
+            {jobData.title}
+          </h1>
+          <button className="flex items-center space-x-2 bg-primary font-semibold text-white py-2 mr-4 px-4 rounded-md">
+            <PiShareFatDuotone size={22} />
+            <span>Share & Promote</span>
+          </button>
         </div>
         <div className="flex items-center space-x-6 font-nunito text-[0.94rem] tracking-tight font-semibold">
           <div className="flex items-center text-gray-500">
@@ -135,10 +140,7 @@ const JobDetails = () => {
               {jobData.contactPerson.name}
             </span>
           </div>
-        
-        
         </div>
-        
       </div>
 
       <div className="border-b border-gray-300 mb-6">

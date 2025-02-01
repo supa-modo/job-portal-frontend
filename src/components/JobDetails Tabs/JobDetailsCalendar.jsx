@@ -1,252 +1,371 @@
-import React from "react";
+import React, { useState } from "react";
+import {
+  format,
+  startOfWeek,
+  endOfWeek,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  addMonths,
+  addDays,
+  isSameMonth,
+  isSameDay,
+  parse,
+  getHours,
+  setHours,
+} from "date-fns";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Calendar as CalendarIcon,
+} from "lucide-react";
 
-const JobDetailsCalendar = () => {
-  const timeSlots = Array.from({ length: 24 }, (_, i) => {
-    const hour = i;
-    const period = hour >= 12 ? "pm" : "am";
-    const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-    return `${displayHour}:00${period}`;
+const ViewType = {
+  DAY: "day",
+  WEEK: "week",
+  MONTH: "month",
+};
+
+const Calendar = () => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [viewType, setViewType] = useState(ViewType.MONTH);
+  const [events, setEvents] = useState([]);
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [newEvent, setNewEvent] = useState({
+    title: "",
+    start: null,
+    end: null,
   });
 
-  const days = [
-    { date: "04", day: "Sunday" },
-    { date: "05", day: "Monday" },
-    { date: "06", day: "Tuesday" },
-    { date: "07", day: "Wednesday" },
-    { date: "08", day: "Thursday" },
-    { date: "09", day: "Friday" },
-    { date: "10", day: "Saturday" },
-  ];
-
-  const locations = [
-    { id: "online", label: "Online", color: "bg-green-500" },
-    { id: "main-branch", label: "Main Branch Office", color: "bg-purple-500" },
-    { id: "main-lobby", label: "Main Lobby Office", color: "bg-blue-500" },
-    { id: "guest", label: "Guest Room", color: "bg-gray-300" },
-    {
-      id: "first-class",
-      label: "First Class Guest Room",
-      color: "bg-gray-400",
-    },
-    { id: "ballroom", label: "Ballroom Premium", color: "bg-amber-500" },
-    {
-      id: "meeting",
-      label: "Main Branch Meeting Room",
-      color: "bg-orange-500",
-    },
-  ];
-
-  const interviews = [
-    {
-      id: 1,
-      candidate: "Randy Dibbert",
-      avatar: "/api/placeholder/32/32",
-      type: "Stage 3 Interview - Live design",
-      time: "10:00am - 11:30am",
-      day: "Monday",
-      location: "online",
-      color: "bg-blue-100",
-    },
-    {
-      id: 2,
-      candidate: "Cameron Dickens",
-      avatar: "/api/placeholder/32/32",
-      type: "First Stage Interview",
-      time: "09:45am - 10:45am",
-      day: "Wednesday",
-      location: "main-lobby",
-      color: "bg-blue-100",
-    },
-    {
-      id: 3,
-      candidate: "Kristi Sipes",
-      avatar: "/api/placeholder/32/32",
-      type: "Technical Assessment",
-      time: "08:00am - 09:00am",
-      day: "Wednesday",
-      location: "main-lobby",
-      color: "bg-blue-100",
-    },
-    {
-      id: 4,
-      candidate: "Isadora Martinez",
-      avatar: "/api/placeholder/32/32",
-      type: "First Stage Interview - Psychological testing",
-      time: "09:45am - 10:45am",
-      day: "Tuesday",
-      location: "online",
-      color: "bg-yellow-100",
-    },
-    {
-      id: 5,
-      candidate: "Brooklyn Simmons",
-      avatar: "/api/placeholder/32/32",
-      type: "Technical Interview",
-      time: "09:45am - 10:45am",
-      day: "Thursday",
-      location: "online",
-      color: "bg-blue-100",
-    },
-  ];
-
-  const getInterviewPosition = (time) => {
-    const [startTime] = time.split(" - ");
-    const [hours, minutes] = startTime.split(":");
-    const hour = parseInt(hours);
-    const minute = parseInt(minutes);
-    return (hour - 9) * 64 + (minute / 60) * 64;
+  // Navigation functions
+  const nextPeriod = () => {
+    switch (viewType) {
+      case ViewType.MONTH:
+        setCurrentDate(addMonths(currentDate, 1));
+        break;
+      case ViewType.WEEK:
+      case ViewType.DAY:
+        setCurrentDate(addDays(currentDate, 7));
+        break;
+    }
   };
 
-  const getInterviewDuration = (time) => {
-    const [startTime, endTime] = time.split(" - ");
-    const [startHours, startMinutes] = startTime.split(":");
-    const [endHours, endMinutes] = endTime.split(":");
-
-    const start = parseInt(startHours) + parseInt(startMinutes) / 60;
-    const end = parseInt(endHours) + parseInt(endMinutes) / 60;
-
-    return (end - start) * 64;
+  const prevPeriod = () => {
+    switch (viewType) {
+      case ViewType.MONTH:
+        setCurrentDate(addMonths(currentDate, -1));
+        break;
+      case ViewType.WEEK:
+      case ViewType.DAY:
+        setCurrentDate(addDays(currentDate, -7));
+        break;
+    }
   };
 
-  const getInterviewColumn = (day) => {
-    return days.findIndex((d) => d.day === day) + 1;
+  // Get days to display based on view type
+  const getDaysToDisplay = () => {
+    switch (viewType) {
+      case ViewType.MONTH:
+        return eachDayOfInterval({
+          start: startOfMonth(currentDate),
+          end: endOfMonth(currentDate),
+        });
+      case ViewType.WEEK:
+        return eachDayOfInterval({
+          start: startOfWeek(currentDate),
+          end: endOfWeek(currentDate),
+        });
+      case ViewType.DAY:
+        return [currentDate];
+    }
   };
 
-  return (
-    <div className="bg-white rounded-lg shadow">
-      <div className="p-4 border-b">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-4">
-            <div className="flex space-x-2">
-              <button className="px-4 py-1.5 text-sm font-medium rounded bg-gray-900 text-white">
-                Week
-              </button>
-              <button className="px-4 py-1.5 text-sm font-medium rounded hover:bg-gray-100">
-                Month
-              </button>
-              <button className="px-4 py-1.5 text-sm font-medium rounded hover:bg-gray-100">
-                Day
-              </button>
-            </div>
-            <div className="text-lg font-medium">October 2023</div>
+  // Generate time slots for day view
+  const getTimeSlots = () => {
+    const slots = [];
+    for (let i = 0; i < 24; i++) {
+      slots.push(setHours(new Date(), i));
+    }
+    return slots;
+  };
+
+  // Handle slot click
+  const handleSlotClick = (date, hour = null) => {
+    const selectedDate = hour !== null ? setHours(date, hour) : date;
+    setSelectedSlot(selectedDate);
+    setNewEvent({
+      title: "",
+      start: selectedDate,
+      end: addDays(selectedDate, 1),
+    });
+    setShowEventModal(true);
+  };
+
+  // Handle event creation
+  const handleCreateEvent = (e) => {
+    e.preventDefault();
+    if (newEvent.title && newEvent.start && newEvent.end) {
+      setEvents([...events, newEvent]);
+      setShowEventModal(false);
+      setNewEvent({ title: "", start: null, end: null });
+    }
+  };
+
+  // Render month view
+  const MonthView = () => {
+    const days = getDaysToDisplay();
+    return (
+      <div className="grid grid-cols-7 gap-1">
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+          <div
+            key={day}
+            className="p-2 text-center font-semibold text-gray-600"
+          >
+            {day}
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="flex space-x-2">
-              <button className="p-1.5 rounded hover:bg-gray-100">
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
-              <button className="p-1.5 rounded hover:bg-gray-100">
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
+        ))}
+        {days.map((day, idx) => (
+          <div
+            key={idx}
+            onClick={() => handleSlotClick(day)}
+            className={`
+              min-h-24 p-2 border border-gray-200 cursor-pointer
+              ${!isSameMonth(day, currentDate) ? "bg-gray-50" : "bg-white"}
+              ${isSameDay(day, new Date()) ? "bg-blue-50" : ""}
+              hover:bg-gray-50 transition-colors
+            `}
+          >
+            <div className="font-medium text-sm">{format(day, "d")}</div>
+            <div className="mt-1">
+              {events
+                .filter((event) =>
+                  isSameDay(parse(event.start, "PP", new Date()), day)
+                )
+                .map((event, eventIdx) => (
+                  <div
+                    key={eventIdx}
+                    className="text-xs p-1 mb-1 bg-blue-500 text-white rounded truncate"
+                  >
+                    {event.title}
+                  </div>
+                ))}
             </div>
-            <button className="px-4 py-1.5 text-sm font-medium rounded hover:bg-gray-100">
-              Today
-            </button>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap gap-4">
-          {locations.map((location) => (
-            <div key={location.id} className="flex items-center space-x-2">
-              <div className={`w-3 h-3 ${location.color} rounded-sm`}></div>
-              <span className="text-sm text-gray-600">{location.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-8 border-b">
-        <div className="p-4 border-r text-sm text-gray-500">Time</div>
-        {days.map((day) => (
-          <div key={day.date} className="p-4 border-r">
-            <div className="font-medium">{day.day}</div>
-            <div className="text-gray-500">{day.date}</div>
           </div>
         ))}
       </div>
+    );
+  };
 
-      <div className="relative">
-        <div className="grid grid-cols-8">
-          <div className="border-r">
-            {timeSlots.slice(9, 17).map((time) => (
-              <div
-                key={time}
-                className="h-28 border-b p-2 text-sm text-gray-500"
-              >
-                {time}
-              </div>
-            ))}
+  // Render week view
+  const WeekView = () => {
+    const days = getDaysToDisplay();
+    const timeSlots = getTimeSlots();
+
+    return (
+      <div className="flex flex-col">
+        <div className="grid grid-cols-8 border-b">
+          <div className="p-2 text-center font-semibold text-gray-600">
+            Time
           </div>
-          {days.map((day) => (
-            <div key={day.date} className="border-r">
-              {timeSlots.slice(9, 17).map((_, idx) => (
-                <div key={idx} className="h-28 border-b">
-                  <div className="border-t border-gray-100 border-dashed relative top-1/2"></div>
+          {days.map((day, idx) => (
+            <div
+              key={idx}
+              className="p-2 text-center font-semibold text-gray-600"
+            >
+              {format(day, "EEE d")}
+            </div>
+          ))}
+        </div>
+        <div className="flex-1">
+          {timeSlots.map((time, timeIdx) => (
+            <div key={timeIdx} className="grid grid-cols-8 border-b">
+              <div className="p-2 text-right text-sm text-gray-600">
+                {format(time, "HH:mm")}
+              </div>
+              {days.map((day, dayIdx) => (
+                <div
+                  key={dayIdx}
+                  onClick={() => handleSlotClick(day, getHours(time))}
+                  className="p-2 border-l cursor-pointer hover:bg-gray-50"
+                >
+                  {events
+                    .filter(
+                      (event) =>
+                        isSameDay(parse(event.start, "PP", new Date()), day) &&
+                        getHours(parse(event.start, "PP", new Date())) ===
+                          getHours(time)
+                    )
+                    .map((event, eventIdx) => (
+                      <div
+                        key={eventIdx}
+                        className="text-xs p-1 bg-blue-500 text-white rounded truncate"
+                      >
+                        {event.title}
+                      </div>
+                    ))}
                 </div>
               ))}
             </div>
           ))}
         </div>
+      </div>
+    );
+  };
 
-        {/* Time indicator line */}
-        <div
-          className="absolute left-0 right-0 border-t-2 border-red-500"
-          style={{ top: "24px" }}
-        >
-          <div className="absolute -left-2 -top-1 w-2 h-2 bg-red-500 rounded-full"></div>
+  // Render day view
+  const DayView = () => {
+    const timeSlots = getTimeSlots();
+
+    return (
+      <div className="flex flex-col">
+        <div className="grid grid-cols-2 border-b">
+          <div className="p-2 text-center font-semibold text-gray-600">
+            Time
+          </div>
+          <div className="p-2 text-center font-semibold text-gray-600">
+            {format(currentDate, "EEEE, MMMM d")}
+          </div>
         </div>
-
-        {/* Interview Blocks */}
-        {interviews.map((interview) => (
-          <div
-            key={interview.id}
-            className={`absolute rounded-lg p-3 ${interview.color} shadow-sm`}
-            style={{
-              top: `${getInterviewPosition(interview.time)}px`,
-              height: `${getInterviewDuration(interview.time)}px`,
-              left: `${getInterviewColumn(interview.day) * 12.5}%`,
-              width: "11%",
-            }}
-          >
-            <div className="flex items-center space-x-2 mb-1">
-              <img
-                src={interview.avatar}
-                alt={interview.candidate}
-                className="w-6 h-6 rounded-full"
-              />
-              <span className="text-sm font-medium">{interview.candidate}</span>
+        {timeSlots.map((time, idx) => (
+          <div key={idx} className="grid grid-cols-2 border-b">
+            <div className="p-2 text-right text-sm text-gray-600">
+              {format(time, "HH:mm")}
             </div>
-            <div className="text-xs text-gray-600">{interview.type}</div>
-            <div className="text-xs text-gray-500 mt-1">{interview.time}</div>
+            <div
+              onClick={() => handleSlotClick(currentDate, getHours(time))}
+              className="p-2 border-l cursor-pointer hover:bg-gray-50"
+            >
+              {events
+                .filter(
+                  (event) =>
+                    isSameDay(
+                      parse(event.start, "PP", new Date()),
+                      currentDate
+                    ) &&
+                    getHours(parse(event.start, "PP", new Date())) ===
+                      getHours(time)
+                )
+                .map((event, eventIdx) => (
+                  <div
+                    key={eventIdx}
+                    className="text-xs p-1 bg-blue-500 text-white rounded truncate"
+                  >
+                    {event.title}
+                  </div>
+                ))}
+            </div>
           </div>
         ))}
+      </div>
+    );
+  };
+
+  return (
+    <div className="max-w-6xl mx-auto p-4">
+      <div className="bg-white rounded-lg shadow">
+        {/* Header */}
+        <div className="p-4 flex items-center justify-between border-b">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={prevPeriod}
+              className="p-2 hover:bg-gray-100 rounded-full"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={nextPeriod}
+              className="p-2 hover:bg-gray-100 rounded-full"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+            <h2 className="text-xl font-semibold">
+              {format(currentDate, "MMMM yyyy")}
+            </h2>
+          </div>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setViewType(ViewType.MONTH)}
+              className={`px-4 py-2 rounded ${
+                viewType === ViewType.MONTH
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-gray-100"
+              }`}
+            >
+              Month
+            </button>
+            <button
+              onClick={() => setViewType(ViewType.WEEK)}
+              className={`px-4 py-2 rounded ${
+                viewType === ViewType.WEEK
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-gray-100"
+              }`}
+            >
+              Week
+            </button>
+            <button
+              onClick={() => setViewType(ViewType.DAY)}
+              className={`px-4 py-2 rounded ${
+                viewType === ViewType.DAY
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-gray-100"
+              }`}
+            >
+              Day
+            </button>
+          </div>
+        </div>
+
+        {/* Calendar Content */}
+        <div className="p-4">
+          {viewType === ViewType.MONTH && <MonthView />}
+          {viewType === ViewType.WEEK && <WeekView />}
+          {viewType === ViewType.DAY && <DayView />}
+        </div>
+
+        {/* Event Modal */}
+        {showEventModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg w-96">
+              <h3 className="text-lg font-semibold mb-4">Create New Event</h3>
+              <form onSubmit={handleCreateEvent}>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Event Title
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full p-2 border rounded"
+                    value={newEvent.title}
+                    onChange={(e) =>
+                      setNewEvent({ ...newEvent, title: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="flex justify-end space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowEventModal(false)}
+                    className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  >
+                    Create
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default JobDetailsCalendar;
+export default Calendar;
