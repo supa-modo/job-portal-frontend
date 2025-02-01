@@ -93,7 +93,7 @@ const SkillsList = ({ skills, isEditing, onDelete, colors }) => (
     {skills.map((skill, i) => (
       <div
         key={i}
-        className={`${colors[i % colors.length]} rounded-full px-4 py-1 ${
+        className={`${colors[i % colors.length]} rounded-full px-4 py-1.5 ${
           isEditing ? "flex items-center" : ""
         }`}
       >
@@ -280,7 +280,7 @@ const JobInfoCard = ({ job }) => {
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="py-2 px-4 text-[0.95rem] border rounded-xl font-semibold  border-primary bg-gray-200 text-primary hover:border-amber-500 focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+            className="py-1.5 px-4 text-[0.95rem] border rounded-xl font-semibold  border-primary bg-gray-200 text-primary hover:border-amber-500 focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
           >
             {JOB_STATUS_OPTIONS.map((option) => (
               <option key={option} value={option}>
@@ -289,11 +289,6 @@ const JobInfoCard = ({ job }) => {
             ))}
           </select>
         </div>
-        
-        <button className="flex items-center space-x-2 bg-primary font-semibold text-white py-2 px-4 rounded-md">
-          <PiShareFatDuotone size={22}/>
-          <span>Share & Promote</span>
-        </button>
       </div>
       <div className="pl-4 pr-14">
         <Label

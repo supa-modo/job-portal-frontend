@@ -1,108 +1,75 @@
 import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { InitialsAvatar } from "../utils/Initials";
+import Table from "./Table";
 
 const JobsTable = ({ jobs }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-
-  const totalPages = Math.ceil(jobs.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = jobs.slice(indexOfFirstItem, indexOfLastItem);
+  const columns = [
+    {
+      key: "title",
+      label: "Job Title",
+      render: (item) => (
+        <div>
+          <div className="font-bold font-nunito tracking-tight text-[0.94rem] text-gray-600">
+            {item.title}
+          </div>
+          <div className="text-sm font-sans text-gray-500">
+            {item.department}
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "type",
+      label: "JOb Type",
+    },
+    {
+      key: "location",
+      label: "Location",
+    },
+    {
+      key: "datePosted",
+      label: "Date Posted",
+      render: (item) => (<span>Jan 01, 2025</span>)
+    },
+    {
+      key: "deadline",
+      label: "Deadline",
+      render: (item) => (<span>Jan 01, 2025</span>)
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (item) => (
+        <span
+          className={`px-3.5 py-1 rounded-lg text-xs font-medium ${
+            item.status === "Published"
+              ? "bg-green-200 text-green-800"
+              : item.status === "Draft"
+              ? "bg-yellow-200 text-yellow-800"
+              : "bg-red-200 text-red-800"
+          }`}
+        >
+          {item.status}
+        </span>
+      ),
+    },
+    {
+      key: "totalCandidates",
+      label: "Applicants",
+    },
+  ];
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-      <table className="min-w-full">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-bold font-nunito text-gray-500 uppercase tracking-wider">
-              Job Title
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-bold font-nunito text-gray-500 uppercase tracking-wider">
-              Department
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-bold font-nunito text-gray-500 uppercase tracking-wider">
-              Location
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-bold font-nunito text-gray-500 uppercase tracking-wider">
-              Status
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-bold font-nunito text-gray-500 uppercase tracking-wider">
-              Candidates
-            </th>
-            <th className="px-6 py-3 text-right text-xs font-bold font-nunito text-gray-500 uppercase tracking-wider">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {currentItems.map((job) => (
-            <tr key={job.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4">
-                <div className="text-sm font-bold font-nunito text-amber-700">
-                  {job.title}
-                </div>
-                <div className="text-xs text-gray-500">{job.type}</div>
-              </td>
-              <td className="px-6 py-4 text-sm text-gray-500">
-                {job.department}
-              </td>
-              <td className="px-6 py-4 text-sm text-gray-500">
-                {job.location}
-              </td>
-              <td className="px-6 py-4">
-                <span
-                  className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                    job.status === "Published"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-gray-100 text-gray-800"
-                  }`}
-                >
-                  {job.status}
-                </span>
-              </td>
-              <td className="px-6 py-4 text-sm text-gray-500">
-                {job.totalCandidates}
-              </td>
-              <td className="px-6 py-4 text-right">
-                <Link
-                  to={`/jobs/${job.id}`}
-                  className="text-button hover:text-primary font-medium text-sm"
-                >
-                  View Details
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div className="px-6 py-3 flex items-center justify-between border-t border-gray-200">
-        <div className="text-sm text-gray-500">
-          Showing {indexOfFirstItem + 1} to{" "}
-          {Math.min(indexOfLastItem, jobs.length)} of {jobs.length} results
-        </div>
-        <div className="flex space-x-2">
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="p-2 rounded hover:bg-gray-100 disabled:opacity-50"
-          >
-            <FaChevronLeft size={14} />
-          </button>
-          <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            disabled={currentPage === totalPages}
-            className="p-2 rounded hover:bg-gray-100 disabled:opacity-50"
-          >
-            <FaChevronRight size={14} />
-          </button>
-        </div>
-      </div>
-    </div>
+    <Table
+      columns={columns}
+      data={jobs}
+      // onRowClick={onViewCandidate}
+      // additionalActions={{
+      //   view: (jobs) => onViewCandidate(candidate),
+      // }}
+    />
   );
 };
 

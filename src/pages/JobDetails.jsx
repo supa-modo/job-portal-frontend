@@ -13,11 +13,12 @@ import { useNavigate } from "react-router-dom";
 import {
   PiBuildingApartmentDuotone,
   PiBuildingDuotone,
+  PiShareFatDuotone,
   PiUsersThreeDuotone,
 } from "react-icons/pi";
 import { LuCalendarPlus } from "react-icons/lu";
 import { MdLocationPin } from "react-icons/md";
-import { TbActivity, TbAutomation, TbBriefcaseFilled } from "react-icons/tb";
+import { TbActivity, TbAutomation, TbBriefcase, TbBriefcaseFilled } from "react-icons/tb";
 import { BsCardChecklist } from "react-icons/bs";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import candidates from "../data/Candidates.json";
@@ -105,13 +106,23 @@ const JobDetails = () => {
       </button>
 
       <div className="bg-white rounded-xl shadow p-6 mb-10">
-        <h1 className="text-3xl font-extrabold font-sans tracking- text-primary mb-6">
+        <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-3xl font-extrabold font-sans tracking- text-primary">
           {jobData.title}
         </h1>
+        <button className="flex items-center space-x-2 bg-primary font-semibold text-white py-2 mr-4 px-4 rounded-md">
+          <PiShareFatDuotone size={22}/>
+          <span>Share & Promote</span>
+        </button>
+        </div>
         <div className="flex items-center space-x-6 font-nunito text-[0.94rem] tracking-tight font-semibold">
           <div className="flex items-center text-gray-500">
             <PiBuildingDuotone className="w-5 h-5 mr-2" />
             <span>{jobData.department}</span>
+          </div>
+          <div className="flex items-center text-gray-500">
+            <TbBriefcase className="w-5 h-5 mr-2" />
+            <span>Senior Level</span>
           </div>
           <div className="flex items-center text-gray-500">
             <MdLocationPin className="w-5 h-5 mr-2" />
@@ -124,7 +135,10 @@ const JobDetails = () => {
               {jobData.contactPerson.name}
             </span>
           </div>
+        
+        
         </div>
+        
       </div>
 
       <div className="border-b border-gray-300 mb-6">

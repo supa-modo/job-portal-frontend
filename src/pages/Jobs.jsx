@@ -1,19 +1,10 @@
 import { useState } from "react";
 import {
-  TbBriefcase,
-  TbUsers,
   TbPlus,
-  TbLocation,
-  TbArrowRight,
   TbListDetails,
   TbLayoutGrid,
 } from "react-icons/tb";
-import { motion } from "framer-motion";
-import { FaBriefcase, FaChevronRight, FaLocationPin } from "react-icons/fa6";
-import { MdArrowRight, MdLocationPin } from "react-icons/md";
-import { BsGrid, BsListUl } from "react-icons/bs";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
 import JobsTable from "../components/JobsTable";
 import JobCard from "../components/JobCard";
 import { jobsData } from "../data/jobsData2";
