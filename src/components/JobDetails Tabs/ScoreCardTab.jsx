@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Plus, X, Edit2, Check, ChevronDown, ChevronUp } from "lucide-react";
+import { PiTrashDuotone, PiTrashSimpleDuotone } from "react-icons/pi";
+import { TbEdit } from "react-icons/tb";
 
 const ScoreCard = () => {
   const [sections, setSections] = useState([
@@ -8,8 +10,19 @@ const ScoreCard = () => {
       title: "Technical Skills",
       isOpen: true,
       skills: [
-        { id: 1, name: "React Development", weight: 30, requiredScore: 8 },
-        { id: 2, name: "API Integration", weight: 20, requiredScore: 7 },
+        {
+          id: 1,
+          name: "Web Development with React",
+          weight: 30,
+          requiredScore: 4,
+        },
+        {
+          id: 2,
+          name: "API Integration to frontend",
+          weight: 20,
+          requiredScore: 3,
+        },
+        
       ],
     },
     {
@@ -17,8 +30,19 @@ const ScoreCard = () => {
       title: "Soft Skills",
       isOpen: true,
       skills: [
-        { id: 3, name: "Communication", weight: 25, requiredScore: 8 },
-        { id: 4, name: "Team Collaboration", weight: 25, requiredScore: 7 },
+        {
+          id: 3,
+          name: "Language & Communication",
+          weight: 25,
+          requiredScore: 4,
+        },
+         {
+          id: 4,
+          name: "Adaptability & Problem-Solving",
+          weight: 25,
+          requiredScore: 3,
+        },
+        { id: 4, name: "Team Collaboration ", weight: 25, requiredScore: 3 },
       ],
     },
   ]);
@@ -115,17 +139,17 @@ const ScoreCard = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
+    <div className="w-full mx-auto px-8 space-y-6">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">
+        <h1 className="text-2xl font-bold text-gray-500">
           Candidate Evaluation Scorecard
         </h1>
         <button
           onClick={() => setShowNewSectionInput(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary transition-colors"
+          className="flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-semibold rounded-lg hover:bg-amber-700 transition-colors"
         >
           <Plus size={20} />
-          Add Section
+          Add Evaluation Section
         </button>
       </div>
 
@@ -159,7 +183,7 @@ const ScoreCard = () => {
           className="bg-white rounded-xl shadow-sm border border-gray-200"
         >
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 ">
               <button
                 onClick={() => toggleSection(section.id)}
                 className="text-gray-500 hover:text-gray-700"
@@ -188,36 +212,39 @@ const ScoreCard = () => {
                   autoFocus
                 />
               ) : (
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-amber-700 ">
                   {section.title}
                 </h2>
               )}
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-8 pr-8 ">
               <span className="text-sm text-gray-600">
-                Total Weight: {getTotalWeight(section.skills)}%
+                Total Weight:{" "}
+                <span className="font-bold text-amber-600 font-nunito">
+                  {getTotalWeight(section.skills)}%
+                </span>
               </span>
               <button
                 onClick={() => addNewSkill(section.id)}
-                className="p-1 text-gray-600 hover:text-gray-800"
+                className="flex items-center gap-3 font-semibold text-primary hover:text-gray-800"
               >
-                <Plus size={20} />
+                <Plus size={24} /> Add Test
               </button>
               <button
                 onClick={() => deleteSection(section.id)}
-                className="p-1 text-red-600 hover:text-red-800"
+                className="flex items-center gap-3 font-semibold p-1 text-red-600 hover:text-red-800"
               >
-                <X size={20} />
+                <PiTrashDuotone size={24} /> Delete Section
               </button>
             </div>
           </div>
 
           {section.isOpen && (
-            <div className="p-4 space-y-4">
+            <div className="p-4 space-y-4 pr-14">
               {section.skills.map((skill) => (
                 <div
                   key={skill.id}
-                  className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center gap-4 p-3 bg-gray-50 font-semibold  rounded-lg hover:bg-gray-100 transition-colors"
                 >
                   {editingSkill === skill.id ? (
                     <>
@@ -260,17 +287,19 @@ const ScoreCard = () => {
                     </>
                   ) : (
                     <>
-                      <span className="flex-1 text-gray-800">{skill.name}</span>
-                      <span className="w-20 text-center text-gray-600">
+                      <span className="flex-1 text-gray-500">{skill.name}</span>
+                      <span className="w-24 text-center font-nunito font-bold text-gray-500">
                         {skill.weight}%
                       </span>
-                      <div className="w-20 flex justify-center">
-                        {Array.from({ length: 10 }).map((_, i) => (
+                      <div className="flex justify-center">
+                        {/* <span className="text-gray-500">Required: </span> */}
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          
                           <span
                             key={i}
-                            className={`w-2 h-2 rounded-full mx-0.5 ${
+                            className={`w-2 h-5 rounded-full mx-1 ${
                               i < skill.requiredScore
-                                ? "bg-primary"
+                                ? "bg-primary/85"
                                 : "bg-gray-300"
                             }`}
                           />
@@ -278,22 +307,22 @@ const ScoreCard = () => {
                       </div>
                     </>
                   )}
-                  <div className="flex gap-2">
+                  <div className="flex pl-6 gap-6">
                     <button
                       onClick={() =>
                         setEditingSkill(
                           editingSkill === skill.id ? null : skill.id
                         )
                       }
-                      className="p-1 text-gray-600 hover:text-gray-800"
+                      className="p-1 flex items-center gap-2.5 text-gray-600 hover:text-gray-800"
                     >
-                      <Edit2 size={16} />
+                      <TbEdit size={18} /> Edit
                     </button>
                     <button
                       onClick={() => deleteSkill(section.id, skill.id)}
                       className="p-1 text-red-600 hover:text-red-800"
                     >
-                      <X size={16} />
+                      <X size={20} />
                     </button>
                   </div>
                 </div>
