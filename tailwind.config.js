@@ -11,6 +11,7 @@ module.exports = {
         "primary-hover": "#347c73",
         "primary-light": "#357e5e",
         "primary-extralight": "#409972",
+        "cal-header": "#eaf1f0",
       },
 
       fontFamily: {

@@ -45,7 +45,7 @@ const Table = ({ columns, data, onRowClick, additionalActions }) => {
                   {index + 1 + (currentPage - 1) * itemsPerPage}
                 </td>
                 {columns.map((column) => (
-                  <td key={column.key} className="px-6 py-3 whitespace-nowrap">
+                  <td key={column.key} className="px-6 py-3 text-gray-600 whitespace-nowrap">
                     {column.render ? column.render(item) : item[column.key]}
                   </td>
                 ))}

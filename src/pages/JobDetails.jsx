@@ -15,7 +15,7 @@ import {
   PiShareFatDuotone,
   PiUsersThreeDuotone,
 } from "react-icons/pi";
-import { LuCalendarPlus } from "react-icons/lu";
+import { LuCalendarCheck, LuCalendarCheck2, LuCalendarPlus } from "react-icons/lu";
 import { MdLocationPin } from "react-icons/md";
 import {
   TbActivity,
@@ -46,7 +46,7 @@ const JobDetails = () => {
       icon: PiUsersThreeDuotone,
     },
     { id: "job-info", label: "Job Info", icon: TbBriefcaseFilled },
-    { id: "calendar", label: "Calendar", icon: LuCalendarPlus },
+    { id: "calendar", label: "Calendar", icon: LuCalendarCheck2 },
     { id: "score-card", label: "Score Card", icon: BsCardChecklist },
     { id: "activity", label: "Activity", icon: TbActivity },
     {

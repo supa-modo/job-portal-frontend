@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import EventForm from "./Calendar/EventForm";
+import { MapPin } from "lucide-react";
+import {
+  TbCalendarCheck,
+  TbCalendarPlus,
+  TbCalendarTime,
+} from "react-icons/tb";
+import { FaAngleLeft, FaAngleRight, FaUser } from "react-icons/fa";
 
 // Helper functions for date manipulation
 const getDaysInMonth = (date) => {
@@ -34,14 +41,38 @@ const sampleEvents = [
   {
     id: 1,
     title: "First Stage Interview - Portfolio Review",
-    start: "2025-02-05T10:30",
-    startTime: "10:30",
-    end: "2025-02-05T11:30",
-    endTime: "11:30",
+    start: "2025-02-05T09:30",
+    startTime: "09:30",
+    end: "2025-02-05T11:45",
+    endTime: "10:45",
     type: "Portfolio Review",
-    location: "Main Branch Office",
+    location: "Virtual Conference Room",
     interviewer: "Marvin McKinney",
     color: "#e3f2fd",
+  },
+  {
+    id: 6,
+    title: "First Stage Interview - Portfolio Review",
+    start: "2025-02-03T08:30",
+    startTime: "09:30",
+    end: "2025-02-03T10:35",
+    endTime: "10:45",
+    type: "Portfolio Review",
+    location: "Main Conference Room",
+    interviewer: "Marvin McKinney",
+    color: "#e3f2fd",
+  },
+  {
+    id: 4,
+    title: "Final Stage Interview - Psychological Testing",
+    start: "2025-02-06T08:30",
+    startTime: "13:00",
+    end: "2025-02-06T10:00",
+    endTime: "14:30",
+    type: "Psychological Testing",
+    location: "Online",
+    interviewer: "Dave Newjeans",
+    color: "#fff3e0",
   },
   {
     id: 2,
@@ -51,7 +82,19 @@ const sampleEvents = [
     end: "2025-02-05T15:00",
     endTime: "15:00",
     type: "Live Design",
-    location: "Main Lobby Office",
+    location: "Room 205",
+    interviewer: "Randy Dibbert",
+    color: "#e8f5e9",
+  },
+  {
+    id: 5,
+    title: "Stage 3 Interview - Live Design",
+    start: "2025-02-04T11:00",
+    startTime: "14:00",
+    end: "2025-02-04T13:00",
+    endTime: "15:00",
+    type: "Live Design",
+    location: "Room 205",
     interviewer: "Randy Dibbert",
     color: "#e8f5e9",
   },
@@ -63,7 +106,19 @@ const sampleEvents = [
     end: "2025-02-07T14:30",
     endTime: "14:30",
     type: "Psychological Testing",
-    location: "Ballroom Premium",
+    location: "Online",
+    interviewer: "Dave Newjeans",
+    color: "#fff3e0",
+  },
+  {
+    id: 7,
+    title: "Final Stage Interview - Psychological Testing",
+    start: "2025-02-05T11:00",
+    startTime: "13:00",
+    end: "2025-02-05T13:30",
+    endTime: "14:30",
+    type: "Psychological Testing",
+    location: "Online",
     interviewer: "Dave Newjeans",
     color: "#fff3e0",
   },
@@ -80,14 +135,19 @@ const Calendar = () => {
   const [dragEnd, setDragEnd] = useState(null);
 
   const locations = [
-    { id: 1, name: "Online", color: "#2196f3" },
-    { id: 2, name: "Main Branch Office", color: "#4caf50" },
-    { id: 3, name: "Main Lobby Office", color: "#ff9800" },
-    { id: 4, name: "Guest Room", color: "#9c27b0" },
-    { id: 5, name: "First Class Guest Room", color: "#f44336" },
-    { id: 6, name: "Ballroom Premium", color: "#795548" },
-    { id: 7, name: "Main Branch Meeting Room", color: "#607d8b" },
+    { id: 1, name: "Online", color: "#c8e5fc" },
+    { id: 2, name: "Main Conference Room", color: "#c6e6c7" },
+    { id: 3, name: "Room 205", color: "#ffe7c4" },
+    { id: 4, name: "Room 300", color: "#9c27b0" },
+    { id: 5, name: "Virtual Conference Room", color: "#fccecb" },
+    // { id: 6, name: "Ballroom Premium", color: "#795548" },
+    // { id: 7, name: "Main Branch Meeting Room", color: "#607d8b" },
   ];
+
+  const getLocationColor = (locationName) => {
+    const location = locations.find((loc) => loc.name === locationName);
+    return location ? location.color : "#e0e0e0"; // Default color if location not found
+  };
 
   const navigateDate = (direction) => {
     const newDate = new Date(currentDate);
@@ -130,27 +190,53 @@ const Calendar = () => {
     const days = getDaysInMonth(currentDate);
     const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+    const sortEventsByTime = (events) => {
+      return events.sort((a, b) => {
+        const aTime = new Date(a.start);
+        const bTime = new Date(b.start);
+        return aTime - bTime;
+      });
+    };
+
+    const isEventPassed = (eventStart) => {
+      const now = new Date();
+      const eventTime = new Date(eventStart);
+      return eventTime < now;
+    };
+
     return (
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="grid grid-cols-7 gap-px bg-gray-200">
+      <div className="bg-white  rounded-b-2xl overflow-hidden">
+        <div className="grid grid-cols-7 bg-white">
           {weekDays.map((day) => (
             <div
               key={day}
-              className="bg-gray-50 p-4 text-center font-medium text-gray-700"
+              className="h-16 border-b border-r border-gray-200 text-center font-nunito p-4 sticky top-0 bg-cal-header"
             >
-              {day}
+              <span className="font-bold text-gray-500">{day}</span>
             </div>
           ))}
           {days.map((day, index) => {
-            const dayEvents = events.filter(
+            let dayEvents = events.filter(
               (event) =>
                 new Date(event.start).toDateString() === day.toDateString()
             );
 
+            // Sort events by time and separate passed events
+            const sortedEvents = sortEventsByTime(dayEvents);
+            const passedEvents = sortedEvents.filter((event) =>
+              isEventPassed(event.start)
+            );
+            const upcomingEvents = sortedEvents.filter(
+              (event) => !isEventPassed(event.start)
+            );
+
+            // Combine events with passed events at the end
+            dayEvents = [...upcomingEvents, ...passedEvents];
+
             return (
               <div
                 key={index}
-                className={`bg-white min-h-[120px] p-2 ${
+                className={`min-h-[120px] border-b border-r border-gray-200 p-2 transition-all duration-200 hover:bg-gray-50 ${
                   day.getMonth() === currentDate.getMonth()
                     ? "bg-white"
                     : "bg-gray-50"
@@ -158,24 +244,79 @@ const Calendar = () => {
                 onClick={() => handleTimeSlotClick(day, 9)}
               >
                 <div
-                  className={`text-right ${
+                  className={`text-right font-nunito font-bold ${
                     day.getMonth() === currentDate.getMonth()
-                      ? "text-gray-900"
+                      ? day.toDateString() === new Date().toDateString()
+                        ? "text-amber-700"
+                        : "text-gray-700"
                       : "text-gray-400"
                   }`}
                 >
                   {day.getDate()}
                 </div>
-                <div className="mt-1 space-y-1">
-                  {dayEvents.map((event) => (
+                <div className="mt-2 relative">
+                  {dayEvents.map((event, eventIndex) => {
+                    const isPassed = isEventPassed(event.start);
+                    const stackOffset = (dayEvents.length - eventIndex - 1) * 8; // Increased offset for better visibility
+                    const isTopCard = eventIndex === 0;
+
+                    return (
+                      <div
+                        key={event.id}
+                        className={`absolute w-full rounded-lg shadow-sm transition-all duration-200 
+                          ${
+                            isTopCard
+                              ? "hover:scale-[1.02] hover:shadow-md cursor-pointer z-10"
+                              : ""
+                          }
+                          ${isPassed ? "opacity-60" : ""}`}
+                        style={{
+                          backgroundColor: getLocationColor(event.location),
+                          top: `${stackOffset}px`,
+                          zIndex: isTopCard
+                            ? 10
+                            : dayEvents.length - eventIndex,
+                          height: isTopCard ? "70px" : "24px", // Increased height for background cards
+                          opacity: isTopCard ? 1 : 0.96, // Slightly more visible background cards
+                        }}
+                      >
+                        {isTopCard ? (
+                          // Top card with full details
+                          <div className="p-2">
+                            <div className="text-[0.82rem] font-bold font-nunito text-primary truncate">
+                              {event.title}
+                            </div>
+                            <div className="flex items-center gap-1 text-xs text-gray-600 mt-1">
+                              <Clock className="w-3 h-3" />
+                              <span>
+                                {new Date(event.start).toLocaleTimeString(
+                                  "en-US",
+                                  {
+                                    hour: "numeric",
+                                    minute: "2-digit",
+                                    hour12: true,
+                                  }
+                                )}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1 text-xs text-gray-600">
+                              <MapPin className="w-3 h-3" />
+                              <span>{event.location}</span>
+                            </div>
+                          </div>
+                        ) : (
+                          // Background cards now show a minimal hint of event title
+                          <div className="h-full rounded-lg px-2 py-1"></div>
+                        )}
+                      </div>
+                    );
+                  })}
+                  {/* Adjusted spacer div for new card heights */}
+                  {dayEvents.length > 0 && (
                     <div
-                      key={event.id}
-                      className="text-xs p-1 rounded-md truncate"
-                      style={{ backgroundColor: event.color }}
-                    >
-                      {event.title}
-                    </div>
-                  ))}
+                      style={{ height: `${(dayEvents.length - 1) * 8 + 70}px` }}
+                    />
+                  )}
                 </div>
               </div>
             );
@@ -185,99 +326,9 @@ const Calendar = () => {
     );
   };
 
-  const WeekView = () => {
-    const startOfWeek = new Date(currentDate);
-    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
-    const days = Array.from({ length: 7 }, (_, i) => {
-      const date = new Date(startOfWeek);
-      date.setDate(startOfWeek.getDate() + i);
-      return date;
-    });
-
-    const hours = Array.from({ length: 12 }, (_, i) => i + 9);
-
-    const getEventsForDayAndHour = (date, hour) => {
-      return events.filter((event) => {
-        const eventDate = new Date(event.start);
-        return (
-          eventDate.toDateString() === date.toDateString() &&
-          eventDate.getHours() === hour
-        );
-      });
-    };
-
-    return (
-      <div className="mt-4">
-        <div className="grid grid-cols-8 gap-px bg-gray-200 rounded-xl overflow-hidden shadow-lg">
-          <div className="bg-gray-50 p-4 font-medium text-gray-500 text-center">
-            Time
-          </div>
-
-          {days.map((day) => (
-            <div key={day.toISOString()} className="bg-gray-50 p-4 text-center">
-              <div className="font-medium text-gray-900">
-                {day.toLocaleDateString("en-US", { weekday: "short" })}
-              </div>
-              <div className="text-sm text-gray-500">{day.getDate()}</div>
-            </div>
-          ))}
-
-          {hours.map((hour) => (
-            <React.Fragment key={hour}>
-              <div className="bg-white p-4 text-gray-500 text-right border-t">
-                {`${hour}:00`}
-              </div>
-
-              {days.map((day) => (
-                <div
-                  key={`${day.toISOString()}-${hour}`}
-                  className="relative bg-white border-t min-h-[100px] group hover:bg-gray-50 transition-colors cursor-pointer"
-                  onMouseDown={() => handleDragStart(day, hour)}
-                  onMouseUp={() => handleDragEnd(day, hour)}
-                  onClick={() => handleTimeSlotClick(day, hour)}
-                >
-                  {getEventsForDayAndHour(day, hour).map((event) => (
-                    <div
-                      key={event.id}
-                      className="absolute inset-x-0 mx-1 p-2 rounded-lg shadow-sm transform transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
-                      style={{
-                        backgroundColor: event.color,
-                        top: "4px",
-                        minHeight: "80px",
-                      }}
-                    >
-                      <div className="flex items-center gap-2">
-                        <img
-                          src="/api/placeholder/32/32"
-                          alt={event.interviewer}
-                          className="w-8 h-8 rounded-full"
-                        />
-                        <div>
-                          <div className="font-medium text-gray-900">
-                            {event.interviewer}
-                          </div>
-                          <div className="text-sm text-gray-600">
-                            {event.type}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-2 flex items-center gap-1 text-sm text-gray-500">
-                        <Clock className="w-4 h-4" />
-                        {event.startTime} - {event.endTime}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
   const DayView = () => {
-    const hours = Array.from({ length: 12 }, (_, i) => i + 9);
+    // Adjusted to show only 8 AM to 8 PM (13 hours) like week view
+    const hours = Array.from({ length: 13 }, (_, i) => i + 8);
 
     const getEventsForHour = (hour) => {
       return events.filter((event) => {
@@ -289,57 +340,267 @@ const Calendar = () => {
       });
     };
 
+    const calculateEventPosition = (event) => {
+      const startTime = new Date(event.start);
+      const endTime = new Date(event.end);
+
+      const startHour = startTime.getHours() + startTime.getMinutes() / 60;
+      const endHour = endTime.getHours() + endTime.getMinutes() / 60;
+      const duration = endHour - startHour;
+
+      return {
+        top: `${(startHour - 8) * 100}px`,
+        height: `${duration * 100}px`,
+      };
+    };
+
     return (
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="p-4 bg-gray-50 border-b text-center">
-          <div className="font-medium text-gray-900">
-            {currentDate.toLocaleDateString("en-US", { weekday: "long" })}
-          </div>
-          <div className="text-sm text-gray-500">
-            {currentDate.toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-            })}
-          </div>
-        </div>
-        <div className="divide-y">
+      <div className="flex bg-white rounded-b-2xl overflow-hidden">
+        {/* Time labels column */}
+        <div className="w-[10%] border-x border-gray-200 bg-white">
+          <div className="h-16 border-b border-gray-200" />
           {hours.map((hour) => (
             <div
               key={hour}
-              className="flex min-h-[100px] group hover:bg-gray-50 transition-colors cursor-pointer"
-              onClick={() => handleTimeSlotClick(currentDate, hour)}
+              className="h-[100px] border-b border-gray-200 pr-2 relative"
             >
-              <div className="w-32 py-4 px-4 text-right text-gray-500">
-                {`${hour}:00`}
+              <span className="absolute top-3 right-2 text-[0.8rem] font-nunito font-bold text-gray-400">
+                {hour === 0
+                  ? "12 AM"
+                  : hour < 12
+                  ? `${hour} AM`
+                  : hour === 12
+                  ? "12 PM"
+                  : `${hour - 12} PM`}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Events column */}
+        <div className="relative w-full">
+          <div className="h-16 border-b border-gray-200 text-center font-nunito p-4 sticky top-0 bg-cal-header">
+            <div className="font-bold text-gray-500">
+              {currentDate.toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+              })}
+            </div>
+          </div>
+
+          <div className="relative">
+            {hours.map((hour) => (
+              <div
+                key={hour}
+                className="h-[100px] border-b border-gray-200"
+                onDoubleClick={() => handleTimeSlotClick(currentDate, hour)}
+              >
+                <div className="h-[50px] border-b border-gray-100" />
               </div>
-              <div className="flex-1 p-2 relative">
-                {getEventsForHour(hour).map((event) => (
+            ))}
+
+            {events
+              .filter(
+                (event) =>
+                  new Date(event.start).toDateString() ===
+                  currentDate.toDateString()
+              )
+              .map((event) => {
+                const position = calculateEventPosition(event);
+                return (
                   <div
                     key={event.id}
-                    className="p-2 rounded-lg shadow-sm transform transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
-                    style={{ backgroundColor: event.color }}
+                    className="absolute left-1 right-1 rounded-lg shadow-sm p-2 transition-all duration-200 hover:shadow-md hover:scale-[1.02] cursor-pointer"
+                    style={{
+                      ...position,
+                      backgroundColor: getLocationColor(event.location),
+                    }}
                   >
-                    <div className="flex items-center gap-2">
-                      <img
-                        src="/api/placeholder/32/32"
-                        alt={event.interviewer}
-                        className="w-8 h-8 rounded-full"
-                      />
-                      <div>
-                        <div className="font-medium text-gray-900">
+                    <div className="flex flex-col h-full">
+                      <div className="text-sm font-bold font-nunito text-primary truncate">
+                        {event.title}
+                      </div>
+                      <div className="flex items-center gap-1 text-xs text-gray-600 mt-1">
+                        <Clock className="w-3 h-3" />
+                        <span>
+                          {event.startTime} - {event.endTime}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1 text-xs text-gray-600 mt-1">
+                        <MapPin className="w-3 h-3" />
+                        <span>{event.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-xs text-gray-700">
                           {event.interviewer}
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          {event.type}
-                        </div>
+                        </span>
                       </div>
                     </div>
-                    <div className="mt-2 flex items-center gap-1 text-sm text-gray-500">
-                      <Clock className="w-4 h-4" />
-                      {event.startTime} - {event.endTime}
-                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const WeekView = () => {
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+
+    const days = Array.from({ length: 7 }, (_, i) => {
+      const date = new Date(startOfWeek);
+      date.setDate(startOfWeek.getDate() + i);
+      return date;
+    });
+
+    // Adjusted to show only 8 AM to 8 PM (13 hours)
+    const hours = Array.from({ length: 13 }, (_, i) => i + 8);
+
+    const getEventsForDay = (date) => {
+      return events.filter((event) => {
+        const eventDate = new Date(event.start);
+        return eventDate.toDateString() === date.toDateString();
+      });
+    };
+
+    const calculateEventPosition = (event) => {
+      const startTime = new Date(event.start);
+      const endTime = new Date(event.end);
+
+      const startHour = startTime.getHours() + startTime.getMinutes() / 60;
+      const endHour = endTime.getHours() + endTime.getMinutes() / 60;
+      const duration = endHour - startHour;
+
+      // Adjust position calculation for 8 AM start time and new row height
+      return {
+        top: `${(startHour - 8) * 100}px`, // Adjusted for new row height
+        height: `${duration * 100}px`, // Adjusted for new row height
+      };
+    };
+
+    const formatTime = (dateString) => {
+      return new Date(dateString).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+    };
+
+    return (
+      <div className="">
+        <div className="grid grid-cols-8 bg-white rounded-b-2xl overflow-hidden">
+          {/* Time labels column */}
+          <div className="border-x border-gray-200 bg-white">
+            <div className="h-16 border-b border-gray-200" />{" "}
+            {/* Increased header height */}
+            {hours.map((hour) => (
+              <div
+                key={hour}
+                className="h-[100px] border-b border-gray-200 pr-2 relative" // Increased row height
+              >
+                <span className="absolute top-3 right-2 text-[0.8rem] font-nunito font-bold text-gray-400">
+                  {hour === 0
+                    ? "12 AM"
+                    : hour < 12
+                    ? `${hour} AM`
+                    : hour === 12
+                    ? "12 PM"
+                    : `${hour - 12} PM`}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Days columns with vertical grid lines */}
+          {days.map((day, dayIndex) => (
+            <div key={day.toISOString()} className="relative">
+              {/* Day header */}
+              <div className="h-16 border-b border-gray-200 text-center font-nunito p-4 sticky top-0 bg-cal-header z-10">
+                {/* Increased padding and height */}
+                <div
+                  className={`font-bold flex items-center gap-2 ${
+                    day.toDateString() === new Date().toDateString()
+                      ? "text-amber-700"
+                      : "text-gray-500"
+                  }`}
+                >
+                  <span>
+                    {day.toLocaleDateString("en-US", { weekday: "long" })},
+                  </span>
+                  <span>{day.getDate()}</span>
+                </div>
+              </div>
+
+              {/* Time grid */}
+              <div className="relative border-r">
+                {hours.map((hour) => (
+                  <div
+                    key={hour}
+                    className="h-[100px] border-b border-gray-200" // Increased row height
+                    onDoubleClick={() => handleTimeSlotClick(day, hour)}
+                  >
+                    {/* Half-hour marker */}
+                    <div className="h-[50px] border-b border-gray-100"></div>{" "}
+                    {/* Adjusted half-hour marker */}
                   </div>
                 ))}
+
+                {/* Events */}
+                {getEventsForDay(day).map((event) => {
+                  const position = calculateEventPosition(event);
+                  return (
+                    <div
+                      key={event.id}
+                      className="absolute left-1 right-1 rounded-lg shadow-sm p-2 transition-all duration-200 hover:shadow-md hover:scale-[1.02] cursor-pointer overflow-hidden"
+                      style={{
+                        ...position,
+                        backgroundColor: getLocationColor(event.location),
+                      }}
+                    >
+                      <div className="flex flex-col h-full">
+                        <div className="text-[0.85rem] font-bold font-nunito text-primary truncate">
+                          {event.title}
+                        </div>
+                        <div className="flex items-center gap-1 text-xs text-gray-600 mt-1">
+                          <Clock className="w-3 h-3" />
+                          <span>
+                            {formatTime(event.start)} - {formatTime(event.end)}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1 text-xs text-gray-600 mt-1">
+                          <MapPin className="w-3 h-3" />
+                          <span>{event.location}</span>
+                        </div>
+                        <div className="flex items-center gap-2 mt-2">
+                          <span className="text-xs text-gray-700">
+                            {event.interviewer}
+                          </span>
+                        </div>
+                        {position.height > 100 && ( // Adjusted threshold for showing additional info
+                          <>
+                            <div className="flex items-center gap-1 text-xs text-gray-600 mt-1">
+                              <MapPin className="w-3 h-3" />
+                              <span>{event.location}</span>
+                            </div>
+                            <div className="flex items-center gap-2 mt-2">
+                              <img
+                                src={<FaUser />}
+                                alt={event.interviewer}
+                                className="w-6 h-6 rounded-full"
+                              />
+                              <span className="text-xs text-gray-700">
+                                {event.interviewer}
+                              </span>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -348,248 +609,83 @@ const Calendar = () => {
     );
   };
 
-  //   const EventForm = ({ onClose }) => {
-  //     const [formData, setFormData] = useState({
-  //       title: "",
-  //       date: selectedTimeSlot?.toISOString().split("T")[0] || "",
-  //       startTime: "",
-  //       endTime: "",
-  //       location: "",
-  //       interviewer: "",
-  //       type: "",
-  //     });
-
-  //     const handleSubmit = (e) => {
-  //       e.preventDefault();
-  //       const newEvent = {
-  //         id: Date.now(),
-  //         title: formData.title,
-  //         start: `${formData.date}T${formData.startTime}`,
-  //         startTime: formData.startTime,
-  //         end: `${formData.date}T${formData.endTime}`,
-  //         endTime: formData.endTime,
-  //         type: formData.type,
-  //         location: formData.location,
-  //         interviewer: formData.interviewer,
-  //         color:
-  //           locations.find((l) => l.name === formData.location)?.color ||
-  //           "#e3f2fd",
-  //       };
-  //       setEvents([...events, newEvent]);
-  //       onClose();
-  //     };
-
-  //     return (
-  //       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-  //         <div className="bg-white rounded-xl w-[500px] max-h-[90vh] overflow-y-auto">
-  //           <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
-  //             <h2 className="text-xl font-semibold text-gray-900">
-  //               Schedule Interview
-  //             </h2>
-  //           </div>
-
-  //           <form onSubmit={handleSubmit} className="p-6 space-y-6">
-  //             <div className="space-y-2">
-  //               <label className="block text-sm font-medium text-gray-700">
-  //                 Title
-  //               </label>
-  //               <input
-  //                 type="text"
-  //                 value={formData.title}
-  //                 onChange={(e) =>
-  //                   setFormData({ ...formData, title: e.target.value })
-  //                 }
-  //                 className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-  //                 placeholder="Interview Title"
-  //               />
-  //             </div>
-
-  //             <div className="space-y-2">
-  //               <label className="block text-sm font-medium text-gray-700">
-  //                 Date
-  //               </label>
-  //               <input
-  //                 type="date"
-  //                 value={formData.date}
-  //                 onChange={(e) =>
-  //                   setFormData({ ...formData, date: e.target.value })
-  //                 }
-  //                 className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-  //               />
-  //             </div>
-
-  //             <div className="grid grid-cols-2 gap-4">
-  //               <div className="space-y-2">
-  //                 <label className="block text-sm font-medium text-gray-700">
-  //                   Start Time
-  //                 </label>
-  //                 <input
-  //                   type="time"
-  //                   value={formData.startTime}
-  //                   onChange={(e) =>
-  //                     setFormData({ ...formData, startTime: e.target.value })
-  //                   }
-  //                   className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-  //                 />
-  //               </div>
-  //               <div className="space-y-2">
-  //                 <label className="block text-sm font-medium text-gray-700">
-  //                   End Time
-  //                 </label>
-  //                 <input
-  //                   type="time"
-  //                   value={formData.endTime}
-  //                   onChange={(e) =>
-  //                     setFormData({ ...formData, endTime: e.target.value })
-  //                   }
-  //                   className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-  //                 />
-  //               </div>
-  //             </div>
-
-  //             <div className="space-y-2">
-  //               <label className="block text-sm font-medium text-gray-700">
-  //                 Location
-  //               </label>
-  //               <select
-  //                 value={formData.location}
-  //                 onChange={(e) =>
-  //                   setFormData({ ...formData, location: e.target.value })
-  //                 }
-  //                 className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-  //               >
-  //                 <option value="">Select Location</option>
-  //                 {locations.map((location) => (
-  //                   <option key={location.id} value={location.name}>
-  //                     {location.name}
-  //                   </option>
-  //                 ))}
-  //               </select>
-  //             </div>
-
-  //             <div className="space-y-2">
-  //               <label className="block text-sm font-medium text-gray-700">
-  //                 Interviewer
-  //               </label>
-  //               <input
-  //                 type="text"
-  //                 value={formData.interviewer}
-  //                 onChange={(e) =>
-  //                   setFormData({ ...formData, interviewer: e.target.value })
-  //                 }
-  //                 className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-  //                 placeholder="Interviewer Name"
-  //               />
-  //             </div>
-
-  //             <div className="space-y-2">
-  //               <label className="block text-sm font-medium text-gray-700">
-  //                 Interview Type
-  //               </label>
-  //               <input
-  //                 type="text"
-  //                 value={formData.type}
-  //                 onChange={(e) =>
-  //                   setFormData({ ...formData, type: e.target.value })
-  //                 }
-  //                 className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-  //                 placeholder="e.g., Portfolio Review, Technical Interview"
-  //               />
-  //             </div>
-
-  //             <div className="flex justify-end gap-3 pt-4">
-  //               <button
-  //                 type="button"
-  //                 onClick={onClose}
-  //                 className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
-  //               >
-  //                 Cancel
-  //               </button>
-  //               <button
-  //                 type="submit"
-  //                 className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
-  //               >
-  //                 Schedule Interview
-  //               </button>
-  //             </div>
-  //           </form>
-  //         </div>
-  //       </div>
-  //     );
-  //   };
-
   return (
-    <div className="container mx-auto p-6 bg-gray-50">
+    <div className="rounded-2xl bg-gray-200 border">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
-          <div className="flex gap-2 bg-white p-1 rounded-lg shadow-sm">
-            <button
-              onClick={() => navigateDate("prev")}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => navigateDate("next")}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">
-              {currentDate.toLocaleDateString("en-US", {
-                month: "long",
-                year: "numeric",
-              })}
-            </h1>
-            <p className="text-sm text-gray-500">
-              {currentDate.toLocaleDateString("en-US", {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="flex bg-white p-1 rounded-lg shadow-sm">
-            {["day", "week", "month"].map((v) => (
+      <div className="pt-4 pb-2 px-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-10">
+            <div className="flex gap-2 bg-white p-1 rounded-lg shadow-sm">
               <button
-                key={v}
-                onClick={() => setView(v)}
-                className={`px-4 py-2 rounded-md text-sm font-medium capitalize transition-colors ${
-                  view === v
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
+                onClick={() => navigateDate("prev")}
+                className="p-2 rounded-lg text-gray-500 hover:bg-gray-200 transition-colors"
               >
-                {v}
+                <FaAngleLeft size={22} className="" />
               </button>
-            ))}
+              <button
+                onClick={() => navigateDate("next")}
+                className="p-2 rounded-lg hover:bg-gray-200 text-gray-500 transition-colors"
+              >
+                <FaAngleRight size={22} className="" />
+              </button>
+            </div>
+            <div>
+              <h1 className="text-xl font-extrabold font-nunito text-gray-600">
+                {currentDate.toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                })}
+              </h1>
+              <p className="text-sm text-gray-500">
+                {currentDate.toLocaleDateString("en-US", {
+                  weekday: "long",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
+            </div>
           </div>
-          <button
-            onClick={() => setShowEventForm(true)}
-            className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm"
-          >
-            Schedule Interview
-          </button>
-        </div>
-      </div>
 
-      {/* Location Legend */}
-      <div className="flex gap-4 mb-6 flex-wrap bg-white p-4 rounded-xl shadow-sm">
-        {locations.map((location) => (
-          <div key={location.id} className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: location.color }}
-            />
-            <span className="text-sm text-gray-600">{location.name}</span>
+          <div className="flex items-center gap-4">
+            <div className="flex bg-white p-1 rounded-lg shadow-sm">
+              {["day", "week", "month"].map((v) => (
+                <button
+                  key={v}
+                  onClick={() => setView(v)}
+                  className={`px-4 py-2 rounded-md text-sm font-nunito font-bold capitalize transition-colors ${
+                    view === v
+                      ? "bg-primary text-white"
+                      : "text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
+                  {v}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowEventForm(true)}
+              className="flex items-center gap-2 px-4 py-2 text-white font-semibold bg-amber-600 rounded-lg hover:bg-amber-700 shadow-sm"
+            >
+              <TbCalendarPlus size={20} />
+              <span>Schedule Interview</span>
+            </button>
           </div>
-        ))}
+        </div>
+
+        {/* Location Legend */}
+        <div className="flex gap-4 flex-wrap p-4  rounded-xl ">
+          {locations.map((location) => (
+            <div key={location.id} className="flex items-center gap-2">
+              <div
+                className="w-5 h-3 rounded-xl border border-gray-300"
+                style={{ backgroundColor: location.color }}
+              />
+              <span className="text-sm font-semibold font-nunito  text-gray-600">
+                {location.name}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Calendar Views */}
@@ -604,6 +700,8 @@ const Calendar = () => {
             setShowEventForm(false);
             setSelectedTimeSlot(null);
           }}
+          selectedTimeSlot={selectedTimeSlot}
+          setEvents={setEvents}
         />
       )}
     </div>

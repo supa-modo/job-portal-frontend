@@ -1,6 +1,6 @@
 export const sampleJob = {
   id: 1, // Important: Include an ID for each job
-  title: "Senior Software Engineer",
+  title: "Senior Public Relations Officer",
   company: "Tech Innovators Inc.",
   location: "Nairobi, Kenya",
   type: "Contract",
