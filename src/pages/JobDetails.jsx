@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import {
   PiBuildingDuotone,
   PiShareFatDuotone,
+  PiUserCheckDuotone,
   PiUsersThreeDuotone,
 } from "react-icons/pi";
 import { LuCalendarCheck2 } from "react-icons/lu";
@@ -27,6 +28,7 @@ import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import candidates from "../data/Candidates.json";
 import CandidatesTab from "../components/JobDetails Tabs/CandidatesTab";
 import Calendar from "../components/JobDetails Tabs/CalendarEventModal";
+import ShortlistingCriteriaTab from "../components/JobDetails Tabs/ShortlistingCriteriaTab";
 
 const JobDetails = () => {
   const [activeTab, setActiveTab] = useState("candidates");
@@ -46,7 +48,12 @@ const JobDetails = () => {
     },
     { id: "job-info", label: "Job Info", icon: TbBriefcaseFilled },
     { id: "calendar", label: "Calendar", icon: LuCalendarCheck2 },
-    { id: "score-card", label: "Score Card", icon: BsCardChecklist },
+    {
+      id: "shortlisting-criteria",
+      label: "Shortlisting",
+      icon: PiUserCheckDuotone,
+    },
+    { id: "score-card", label: "Interview Score Card", icon: BsCardChecklist },
     { id: "activity", label: "Activity", icon: TbActivity },
     {
       id: "application-form",
@@ -87,11 +94,14 @@ const JobDetails = () => {
             onUpdate={console.log}
           />
         );
-
+      case "shortlisting-criteria":
+        return <ShortlistingCriteriaTab />;
       default:
         return (
           <div className="p-6 bg-white rounded-lg">
-            <p className="text-gray-600">Content for {activeTab} tab coming soon...</p>
+            <p className="text-gray-600">
+              Content for {activeTab} tab coming soon...
+            </p>
           </div>
         );
     }

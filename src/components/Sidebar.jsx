@@ -55,7 +55,7 @@ const Sidebar = () => {
           id: "careers",
           icon: TbWorld,
           label: "Careers View",
-          link: "/careers",
+          link: "/joblistings",
         },
       ],
     },
