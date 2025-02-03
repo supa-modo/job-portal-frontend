@@ -1,6 +1,8 @@
 // components/AutomationTab.jsx
 import React, { useState } from "react";
 import { Play, Pause, Plus, Settings, AlertCircle } from "lucide-react";
+import { FaPause } from "react-icons/fa6";
+import { PiPlayDuotone } from "react-icons/pi";
 
 const AutomationTab = ({ automations, onUpdate }) => {
   const [isAddingNew, setIsAddingNew] = useState(false);
@@ -32,13 +34,15 @@ const AutomationTab = ({ automations, onUpdate }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow">
+    <div className="bg-white rounded-xl shadow">
       <div className="p-6 border-b">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Automations</h2>
+          <h2 className="text-xl text-amber-700 font-bold font-nunito">
+            Automations
+          </h2>
           <button
             onClick={() => setIsAddingNew(true)}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 flex items-center"
+            className="px-6 py-2 text-[0.9rem] font-semibold text-white bg-amber-600 rounded-md hover:bg-amber-700 flex items-center"
           >
             <Plus className="w-4 h-4 mr-2" />
             New Automation
@@ -47,11 +51,11 @@ const AutomationTab = ({ automations, onUpdate }) => {
       </div>
 
       {isAddingNew && (
-        <div className="p-6 border-b bg-gray-50">
-          <h3 className="text-lg font-medium mb-4">Create New Automation</h3>
+        <div className="p-6 border-b bg-gray-50 text-gray-600">
+          <h3 className="text-lg font-bold font-nunito text-primary mb-4">Create New Automation</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-nunito font-semibold text-gray-700">
                 Name
               </label>
               <input
@@ -192,7 +196,7 @@ const AutomationTab = ({ automations, onUpdate }) => {
                   )}
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium">{automation.name}</h3>
+                  <h3 className="text-lg font-semibold text-primary">{automation.name}</h3>
                   <p className="text-sm text-gray-500">
                     Triggers: {automation.trigger}
                   </p>
@@ -200,10 +204,10 @@ const AutomationTab = ({ automations, onUpdate }) => {
               </div>
               <div className="flex items-center space-x-4">
                 <span
-                  className={`px-2 py-1 text-sm rounded-full ${
+                  className={`px-6 py-1.5 text-sm rounded-lg ${
                     automation.status === "Active"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-gray-100 text-gray-800"
+                      ? "bg-green-200 text-green-800"
+                      : "bg-amber-200 text-red-600"
                   }`}
                 >
                   {automation.status}
@@ -213,15 +217,15 @@ const AutomationTab = ({ automations, onUpdate }) => {
                   className="p-2 text-gray-400 hover:text-gray-600"
                 >
                   {automation.status === "Active" ? (
-                    <Pause className="w-5 h-5" />
+                    <FaPause className="w-5 h-5" />
                   ) : (
-                    <Play className="w-5 h-5" />
+                    <PiPlayDuotone className="w-5 h-5" />
                   )}
                 </button>
               </div>
             </div>
             <div className="mt-4">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">
+              <h4 className="text-sm font-bold font-nunito text-gray-700 mb-2">
                 Actions:
               </h4>
               <ul className="space-y-1">

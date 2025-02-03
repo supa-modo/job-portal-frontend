@@ -55,7 +55,7 @@ export const jobData = {
       name: "Technical Assessment",
       type: "Integration",
       trigger: "After Initial Screening",
-      status: "Active",
+      status: "InActive",
       actions: ["Send coding challenge", "Review submission"],
     },
   ],

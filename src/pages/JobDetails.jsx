@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Building, ChevronLeft, MapPin, User } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import JobInfoTab from "../components/JobDetails Tabs/JobInfoTab";
-import JobDetailsCalendar from "../components/JobDetails Tabs/JobDetailsCalendar";
 import { jobData } from "../data/jobData";
 import { sampleJob } from "../data/JobInfo";
 import ScoreCardTab from "../components/JobDetails Tabs/ScoreCardTab";
@@ -15,7 +14,7 @@ import {
   PiShareFatDuotone,
   PiUsersThreeDuotone,
 } from "react-icons/pi";
-import { LuCalendarCheck, LuCalendarCheck2, LuCalendarPlus } from "react-icons/lu";
+import { LuCalendarCheck2 } from "react-icons/lu";
 import { MdLocationPin } from "react-icons/md";
 import {
   TbActivity,
@@ -27,7 +26,7 @@ import { BsCardChecklist } from "react-icons/bs";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import candidates from "../data/Candidates.json";
 import CandidatesTab from "../components/JobDetails Tabs/CandidatesTab";
-import Calendar from "../components/CalendarEventModal";
+import Calendar from "../components/JobDetails Tabs/CalendarEventModal";
 
 const JobDetails = () => {
   const [activeTab, setActiveTab] = useState("candidates");
@@ -72,15 +71,15 @@ const JobDetails = () => {
         return <Calendar />;
       case "score-card":
         return <ScoreCardTab scoreCard={jobData.scoreCard} />;
-      case "activity":
-        return <ActivityTab activities={jobData.activity} />;
-      case "application-form":
-        return (
-          <ApplicationFormTab
-            formData={jobData.applicationForm}
-            onUpdate={console.log}
-          />
-        );
+      // case "activity":
+      //   return <ActivityTab activities={jobData.activity} />;
+      // case "application-form":
+      //   return (
+      //     <ApplicationFormTab
+      //       formData={jobData.applicationForm}
+      //       onUpdate={console.log}
+      //     />
+      //   );
       case "automation":
         return (
           <AutomationTab
@@ -92,7 +91,7 @@ const JobDetails = () => {
       default:
         return (
           <div className="p-6 bg-white rounded-lg">
-            <p className="text-gray-600">Content for {activeTab} tab</p>
+            <p className="text-gray-600">Content for {activeTab} tab coming soon...</p>
           </div>
         );
     }

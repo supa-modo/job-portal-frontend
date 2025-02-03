@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
-import EventForm from "./Calendar/EventForm";
+import EventForm from "../Calendar/EventForm";
 import { MapPin } from "lucide-react";
 import {
   TbCalendarCheck,
@@ -610,7 +610,7 @@ const Calendar = () => {
   };
 
   return (
-    <div className="rounded-2xl bg-gray-200 border">
+    <div className="rounded-2xl bg-gray-200 border border-gray-300">
       {/* Header */}
       <div className="pt-4 pb-2 px-6">
         <div className="flex items-center justify-between mb-4">
