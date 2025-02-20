@@ -9,7 +9,6 @@ import {
   TbWorld,
 } from "react-icons/tb";
 import { MdLogout, MdSpaceDashboard } from "react-icons/md";
-import { GoSidebarCollapse, GoSidebarExpand } from "react-icons/go";
 import { HiMiniUserGroup } from "react-icons/hi2";
 import { PiUserCheckDuotone } from "react-icons/pi";
 
@@ -172,11 +171,11 @@ const Sidebar = () => {
         </div>
 
         {/* Logout Button - Always at the Bottom */}
-        <div className=" mt-auto border-t border-gray-500 pt-3">
+        <div className=" border-t border-gray-500 pt-3">
           <button
-            className={`flex items-center ${
+            className={`flex items-center  bg-primary/60 ${
               isCollapsed ? "justify-center" : "px-4"
-            } w-full  py-2 text-red-400 hover:bg-red-300 hover:text-red-600 rounded-lg transition-all duration-200`}
+            } w-full  py-3 text-red-400 hover:bg-red-300 hover:text-red-600 rounded-lg transition-all duration-200`}
           >
             <MdLogout className={`h-6 w-6 ${!isCollapsed && "mr-3"}`} />
             {!isCollapsed && <span className="font-semibold">Logout</span>}

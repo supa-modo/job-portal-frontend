@@ -16,7 +16,7 @@ const JobCard = ({ job, sortBy }) => (
             {job.department}
           </span>
           <select
-            className="bg-gray-200  font-bold font-geist rounded-xl px-4 py-1 text-green-700 text-xs focus:outline-none "
+            className="bg-gray-200  font-bold font-geist rounded-lg px-4 py-1.5 text-green-700 text-xs focus:outline-none "
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
           >
