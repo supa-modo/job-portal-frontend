@@ -6,7 +6,7 @@ export const jobsData = [
     location: "Remote",
     experience: "Mid Level",
     description:
-      "We're looking for a skilled Frontend Developer to join our team...",
+      "We're looking for a skilled Frontend Developer to join our team Lorem ipsum dolor sit amet consectetur, adipisicing elit. Expedita, illum quasi. Velit praesentium facilis, earum consequatur maxime unde expedita, quisquam sapiente ab qui ducimus dolorum exercitationem? Natus facilis ducimus nisi.",
     skills: ["React", "JavaScript", "HTML", "CSS"],
     applyLink: "#",
   },
@@ -17,9 +17,11 @@ export const jobsData = [
     location: "New York",
     experience: "Senior Level",
     description:
-      "Join our backend team to work on cutting-edge technologies...",
+      "Join our backend team to work on cutting-edge technologies Lorem ipsum dolor sit amet consectetur, adipisicing elit. Expedita, illum quasi. Velit praesentium facilis, earum consequatur maxime unde expedita, quisquam sapiente ab qui ducimus dolorum exercitationem? Natus facilis ducimus nisi.",
     skills: ["Node.js", "Python", "AWS", "Docker"],
     applyLink: "#",
   },
   // Add more job objects here
 ];
+
+

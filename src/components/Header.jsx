@@ -3,10 +3,11 @@ import {
   BellIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
+import { PiUserCheckDuotone, PiUserDuotone } from "react-icons/pi";
 
 const Header = () => {
   return (
-    <div className="h-16 flex items-center justify-between px-6 shadow-sm border-b bg-white">
+    <div className="h-16 flex items-center justify-between px-6 shadow-sm border-b bg-gray-400">
       <div className="flex items-center flex-1">
         <div className="relative w-64">
           <input
@@ -18,12 +19,13 @@ const Header = () => {
         </div>
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 text-gray-100">
         <button className="p-2 hover:bg-gray-100 rounded-full">
-          <BellIcon className="h-6 w-6 text-gray-600" />
+          <BellIcon className="h-6 w-6 " />
         </button>
-        <button className="p-2 hover:bg-gray-100 rounded-full">
-          <UserCircleIcon className="h-6 w-6 text-gray-600" />
+        <button className="p-2 hover:bg-gray-100 flex space-x-3 items-center">
+          <PiUserDuotone className="h-6 w-6 " />
+          <span className="font-semibold ">Eddie Odhiambo</span>
         </button>
       </div>
     </div>
