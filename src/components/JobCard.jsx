@@ -83,7 +83,7 @@ const JobCard = ({ job, sortBy }) => (
         </div>
       </div>
       <button className="text-gray-500 flex items-center space-x-2 hover:text-blue-600 text-sm font-bold font-nunito underline underline-offset-4 transition">
-        <Link to={`/jobs/1`}>View Details</Link>
+        <Link to={`/jobs/job-123`}>View Details</Link>
         <FaChevronRight />
       </button>
     </div>

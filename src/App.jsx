@@ -16,6 +16,9 @@ function App() {
           <Route path="joblistings" element={<JobListings />} />
         </Routes>
       </MainLayout>
+      <Routes>
+        <Route path="/" element={<JobListings />} />
+      </Routes>
     </Router>
   );
 }

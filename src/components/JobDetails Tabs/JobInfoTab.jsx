@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import { Calendar } from "lucide-react";
-import { TbBriefcase, TbEdit, TbCheck, TbX, TbPlus, TbComponents } from "react-icons/tb";
+import {
+  TbBriefcase,
+  TbEdit,
+  TbCheck,
+  TbX,
+  TbPlus,
+  TbComponents,
+} from "react-icons/tb";
 import { BsBuilding } from "react-icons/bs";
 import { MdLocationPin } from "react-icons/md";
-import { PiShareFatDuotone } from "react-icons/pi";
 
 // Constants
 const INITIAL_COLORS = [
@@ -16,8 +22,12 @@ const INITIAL_COLORS = [
 const JOB_STATUS_OPTIONS = ["active", "closed", "draft"];
 
 // Utility functions
-const splitAndFilter = (text) =>
-  text?.split("\n").filter((item) => item.trim()) || [];
+const splitAndFilter = (text) => {
+  if (Array.isArray(text)) {
+    return text;
+  }
+  return text?.split("\n").filter((item) => item.trim()) || [];
+};
 
 // Reusable Components
 const EditButtons = ({ onSave, onCancel }) => (
@@ -97,7 +107,9 @@ const SkillsList = ({ skills, isEditing, onDelete, colors }) => (
           isEditing ? "flex items-center" : ""
         }`}
       >
-        <span className="text-gray-600 text-sm font-nunito font-bold">{skill.trim()}</span>
+        <span className="text-gray-600 text-sm font-nunito font-bold">
+          {skill.trim()}
+        </span>
         {isEditing && (
           <button
             onClick={() => onDelete(skill)}
@@ -111,7 +123,6 @@ const SkillsList = ({ skills, isEditing, onDelete, colors }) => (
   </div>
 );
 
-
 const JobDetailsGrid = ({ details, isEditing, onEdit, onUpdate }) => {
   return (
     <div className="relative">
@@ -124,7 +135,9 @@ const JobDetailsGrid = ({ details, isEditing, onEdit, onUpdate }) => {
       <div className="space-y-4">
         {details.map(({ label, icon: Icon, value, key }) => (
           <div key={key} className="relative">
-            <div className="text-sm font-nunito text-gray-500 mb-1 font-semibold">{label}</div>
+            <div className="text-sm font-nunito text-gray-500 mb-1 font-semibold">
+              {label}
+            </div>
             <EditableField
               isEditing={isEditing}
               value={value}
@@ -141,7 +154,12 @@ const JobDetailsGrid = ({ details, isEditing, onEdit, onUpdate }) => {
 // Main Component
 const JobInfoCard = ({ job }) => {
   const [editingField, setEditingField] = useState(null);
-  const [editedJob, setEditedJob] = useState({ ...job });
+  const [editedJob, setEditedJob] = useState({
+    ...job,
+    skills: Array.isArray(job.skills)
+      ? job.skills
+      : job.skills?.split("\n") || [],
+  });
   const [status, setStatus] = useState("active");
   const [newSkill, setNewSkill] = useState("");
 
@@ -161,17 +179,17 @@ const JobInfoCard = ({ job }) => {
       if (newSkill.trim()) {
         updateField(
           "skills",
-          editedJob.skills
-            ? `${editedJob.skills}\n${newSkill.trim()}`
-            : newSkill.trim()
+          Array.isArray(editedJob.skills)
+            ? [...editedJob.skills, newSkill.trim()]
+            : [newSkill.trim()]
         );
         setNewSkill("");
       }
     },
     delete: (skillToDelete) => {
-      const updatedSkills = splitAndFilter(editedJob.skills)
-        .filter((skill) => skill.trim() !== skillToDelete.trim())
-        .join("\n");
+      const updatedSkills = splitAndFilter(editedJob.skills).filter(
+        (skill) => skill.trim() !== skillToDelete.trim()
+      );
       updateField("skills", updatedSkills);
     },
   };
@@ -221,33 +239,31 @@ const JobInfoCard = ({ job }) => {
   );
 
   const jobDetailsConfig = [
-    
     {
       label: "Work Location",
       icon: MdLocationPin,
       value: editedJob.location,
-      key: "location"
+      key: "location",
     },
     {
       label: "Job Type",
       icon: TbBriefcase,
       value: editedJob.type,
-      key: "type"
+      key: "type",
     },
     {
       label: "Department",
       icon: BsBuilding,
       value: editedJob.department,
-      key: "department"
+      key: "department",
     },
     {
       label: "Experience Level",
       icon: TbBriefcase,
       value: editedJob.experienceLevel,
-      key: "experienceLevel"
-    }
+      key: "experienceLevel",
+    },
   ];
-
 
   const handleJobDetailUpdate = (key, value) => {
     updateField(key, value);
@@ -257,64 +273,61 @@ const JobInfoCard = ({ job }) => {
     <div className="bg-white rounded-2xl shadow-lg py-10 px-10">
       {/* Header Section */}
       <div className=" mb-6">
-      <div className="flex justify-between items-center mb-3">
-        <div className="flex items-center space-x-6 flex-grow">
-          <h1 className="text-2xl font-extrabold font-nunito text-amber-700">
-            <EditableField
-              isEditing={editingField === "title"}
-              value={editedJob.title}
-              onChange={(value) => updateField("title", value)}
-              renderDisplay={(value) => value}
-            />
-          </h1>
-          {editingField === "title" ? (
-            <EditButtons onSave={handleSave} onCancel={handleCancel} />
-          ) : (
-            <button
-              onClick={() => handleEdit("title")}
-              className="text-gray-400 hover:text-amber-500"
+        <div className="flex justify-between items-center mb-3">
+          <div className="flex items-center space-x-6 flex-grow">
+            <h1 className="text-2xl font-extrabold font-nunito text-amber-700">
+              <EditableField
+                isEditing={editingField === "title"}
+                value={editedJob.title}
+                onChange={(value) => updateField("title", value)}
+                renderDisplay={(value) => value}
+              />
+            </h1>
+            {editingField === "title" ? (
+              <EditButtons onSave={handleSave} onCancel={handleCancel} />
+            ) : (
+              <button
+                onClick={() => handleEdit("title")}
+                className="text-gray-400 hover:text-amber-500"
+              >
+                <TbEdit size={20} />
+              </button>
+            )}
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="py-1.5 px-4 text-[0.95rem] border rounded-xl font-semibold  border-primary bg-gray-200 text-primary hover:border-amber-500 focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
             >
-              <TbEdit size={20} />
-            </button>
-          )}
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="py-1.5 px-4 text-[0.95rem] border rounded-xl font-semibold  border-primary bg-gray-200 text-primary hover:border-amber-500 focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
-          >
-            {JOB_STATUS_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {option.charAt(0).toUpperCase() + option.slice(1)}
-              </option>
-            ))}
-          </select>
+              {JOB_STATUS_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="pl-4 pr-14">
+          <Label
+            label="Job Description"
+            onEdit={() => handleEdit("description")}
+          />
+          <EditableField
+            isEditing={editingField === "description"}
+            value={editedJob.description}
+            onChange={(value) => updateField("description", value)}
+            type="textarea"
+            renderDisplay={(value) => (
+              <div className="text-gray-600 ">{value}</div>
+            )}
+          />
         </div>
       </div>
-      <div className="pl-4 pr-14">
-        <Label
-          label="Job Description"
-          onEdit={() => handleEdit("description")}
-        />
-        <EditableField
-          isEditing={editingField === "description"}
-          value={editedJob.description}
-          onChange={(value) => updateField("description", value)}
-          type="textarea"
-          renderDisplay={(value) => (
-            <div className="text-gray-600 ">{value}</div>
-          )}
-        />
-      </div>
-        </div>
-
-        
 
       {/* Main Content */}
       <div className="flex gap-8 border border-gray-200 p-8 rounded-xl">
         {/* Left Column */}
         <div className="w-[30%] space-y-6 border-r-2">
-          
-        <JobDetailsGrid
+          <JobDetailsGrid
             details={jobDetailsConfig}
             isEditing={editingField === "jobDetails"}
             onEdit={() => handleEdit("jobDetails")}
@@ -325,7 +338,7 @@ const JobInfoCard = ({ job }) => {
             "Application Deadline",
             Calendar,
             editedJob.deadline
-          )}  
+          )}
 
           <div>
             <Label label="Application Link" onEdit={() => handleEdit("link")} />
@@ -347,7 +360,7 @@ const JobInfoCard = ({ job }) => {
 
         {/* Right Column */}
         <div className="w-[70%] space-y-8">
-          {["Responsibilities", "Requirements"].map((section) => (
+          {["Responsibilities", "Requirements", "Benefits"].map((section) => (
             <div key={section}>
               <Label
                 label={section}
@@ -363,9 +376,11 @@ const JobInfoCard = ({ job }) => {
                   <div className="space-y-2">
                     {splitAndFilter(value).map((item, i) => (
                       <div key={i} className="flex items-start">
-                        
-                          <TbComponents size={12} className="mr-2 mt-1.5 text-amber-700"/>
-                        
+                        <TbComponents
+                          size={12}
+                          className="mr-2 mt-1.5 text-amber-700"
+                        />
+
                         <span className="text-gray-600">{item.trim()}</span>
                       </div>
                     ))}

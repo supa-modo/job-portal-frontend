@@ -139,7 +139,7 @@ const Sidebar = () => {
                   return (
                     <div key={menuItem.id} className="group relative">
                       {isCollapsed && (
-                        <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white  text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <div className="absolute z-50 left-full ml-4 px-2 py-1 bg-primary/70 text-white  text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                           {menuItem.label}
                         </div>
                       )}

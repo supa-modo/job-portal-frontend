@@ -9,6 +9,10 @@ const CandidatesTab = ({ candidates, onViewCandidate }) => {
       render: (item) => <InitialsAvatar name={item.name} email={item.email} />,
     },
     {
+      key: "phone",
+      label: "Phone",
+    },
+    {
       key: "appliedDate",
       label: "Application_Date",
       render: (item) => new Date(item.appliedDate).toLocaleDateString(),

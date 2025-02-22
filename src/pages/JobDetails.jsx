@@ -8,7 +8,7 @@ import ActivityTab from "../components/JobDetails Tabs/ActivityTab";
 import ApplicationFormTab from "../components/JobDetails Tabs/ApplicationFormTab";
 import AutomationTab from "../components/JobDetails Tabs/AutomationTab";
 import { RiAdminLine } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   PiBuildingDuotone,
   PiShareFatDuotone,
@@ -33,6 +33,13 @@ import ShortlistingCriteriaTab from "../components/JobDetails Tabs/ShortlistingC
 const JobDetails = () => {
   const [activeTab, setActiveTab] = useState("candidates");
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const job = jobData.find((j) => j.id === id);
+
+  if (!job) {
+    return <div>Job not found</div>;
+  }
 
   const handleViewCandidate = (candidate) => {
     // Your view logic here
@@ -43,7 +50,7 @@ const JobDetails = () => {
     {
       id: "candidates",
       label: "Candidates",
-      count: jobData.candidates.length,
+      count: job?.candidates?.length || 0,
       icon: PiUsersThreeDuotone,
     },
     { id: "job-info", label: "Job Info", icon: TbBriefcaseFilled },
@@ -68,29 +75,29 @@ const JobDetails = () => {
       case "candidates":
         return (
           <CandidatesTab
-            candidates={candidates}
+            candidates={job?.candidates || []}
             onViewCandidate={handleViewCandidate}
           />
         );
       case "job-info":
-        return <JobInfoTab job={sampleJob} />;
+        return <JobInfoTab job={job} />;
       case "calendar":
         return <Calendar />;
       case "score-card":
-        return <ScoreCardTab scoreCard={jobData.scoreCard} />;
-      // case "activity":
-      //   return <ActivityTab activities={jobData.activity} />;
-      // case "application-form":
-      //   return (
-      //     <ApplicationFormTab
-      //       formData={jobData.applicationForm}
-      //       onUpdate={console.log}
-      //     />
-      //   );
+        return <ScoreCardTab scoreCard={job?.scoreCard} />;
+      case "activity":
+        return <ActivityTab activities={job?.activity} />;
+      case "application-form":
+        return (
+          <ApplicationFormTab
+            formData={job?.applicationForm}
+            onUpdate={console.log}
+          />
+        );
       case "automation":
         return (
           <AutomationTab
-            automations={jobData.automations}
+            automations={job?.automations}
             onUpdate={console.log}
           />
         );
@@ -122,7 +129,7 @@ const JobDetails = () => {
       <div className="bg-white rounded-xl shadow p-6 mb-10">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-3xl font-extrabold font-sans tracking- text-primary">
-            {jobData.title}
+            {job?.title}
           </h1>
           <button className="flex items-center space-x-2 bg-primary font-semibold text-white py-2 mr-4 px-4 rounded-md">
             <PiShareFatDuotone size={22} />
@@ -132,7 +139,7 @@ const JobDetails = () => {
         <div className="flex items-center space-x-6 font-nunito text-[0.94rem] tracking-tight font-semibold">
           <div className="flex items-center text-gray-500">
             <PiBuildingDuotone className="w-5 h-5 mr-2" />
-            <span>{jobData.department}</span>
+            <span>{job?.department}</span>
           </div>
           <div className="flex items-center text-gray-500">
             <TbBriefcase className="w-5 h-5 mr-2" />
@@ -140,13 +147,13 @@ const JobDetails = () => {
           </div>
           <div className="flex items-center text-gray-500">
             <MdLocationPin className="w-5 h-5 mr-2" />
-            <span>{jobData.location}</span>
+            <span>{job?.location}</span>
           </div>
           <div className="flex items-center text-gray-500">
             <RiAdminLine className="w-5 h-5 mr-2" />
             <span>Posted by: </span>
             <span className="font-bold text-amber-600 font-nunito pl-3 underline underline-offset-4">
-              {jobData.contactPerson.name}
+              {job?.contactPerson?.name}
             </span>
           </div>
         </div>
