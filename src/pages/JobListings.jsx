@@ -17,7 +17,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { jobData } from "../data/jobData";
 import { FaAngleRight } from "react-icons/fa6";
 import careers2 from "/careers2.jpg";
-import { PiSortAscending } from "react-icons/pi";
+import { useNavigate } from "react-router-dom";
 
 const JobListings = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,6 +30,7 @@ const JobListings = () => {
   const [activeView, setActiveView] = useState("list");
   const [selectedJob, setSelectedJob] = useState(null);
   const [showFilters, setShowFilters] = useState(true);
+  const navigate = useNavigate();
 
   // Simulated filters data
   const filterOptions = {
@@ -83,7 +84,9 @@ const JobListings = () => {
 
   const FilterSection = ({ title, options, selected, onChange }) => (
     <div className="mb-6">
-      <h3 className="text-sm font-bold font-nunito text-primary mb-3">{title}</h3>
+      <h3 className="text-sm font-bold font-nunito text-primary mb-3">
+        {title}
+      </h3>
       <div className="space-y-2">
         {options.map((option) => (
           <label key={option} className="flex items-center">
@@ -284,7 +287,9 @@ const JobListings = () => {
           >
             <div className="bg-white rounded-xl shadow-sm p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-amber-800">Filters</h2>
+                <h2 className="text-lg font-semibold text-amber-800">
+                  Filters
+                </h2>
                 <button
                   onClick={() => setShowFilters(false)}
                   className="text-gray-500 font-bold hover:text-gray-500"
@@ -422,14 +427,17 @@ const JobListings = () => {
                           <span>
                             Posted on {job.postedDate || "2 days ago"}
                           </span>
-                          <span className="text-amber-700 font-semibold font-nunito">
+                          <span className="text-amber-700 tracking-tight font-semibold font-nunito">
                             Application Deadline: {job.deadline || "2 days ago"}
                           </span>
                         </div>
                         <a
                           href={job.applyLink}
                           className="inline-flex items-center px-4 py-2 bg-primary-light text-white rounded-lg hover:bg-sidebar transition-colors duration-200 text-sm font-medium"
-                          onClick={(e) => e.stopPropagation()}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate("/login");
+                          }}
                         >
                           Apply Now
                           <FaAngleRight className="ml-2 w-4 h-4" />
