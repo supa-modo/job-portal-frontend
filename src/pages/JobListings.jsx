@@ -366,9 +366,9 @@ const JobListings = () => {
                     }
                   >
                     <div className="px-6 pt-6 pb-4">
-                      <div className="flex justify-between items-start mb-2">
+                      <div className="flex justify-between items-start mb-1">
                         <div className="flex gap-4 items-center">
-                          <h3 className="text-lg font-semibold text-primary group-hover:text-primary-light transition-colors">
+                          <h3 className="text-lg font-bold font-geist tracking-tight text-primary group-hover:text-primary-light transition-colors">
                             {job.title}
                           </h3>
                           <div className="">

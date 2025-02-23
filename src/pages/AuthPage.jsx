@@ -13,9 +13,16 @@ import {
   TbClipboardText,
   TbEdit,
   TbFileUpload,
+  TbLockFilled,
 } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
-import { PiUploadDuotone } from "react-icons/pi";
+import {
+  PiPasswordDuotone,
+  PiSignInDuotone,
+  PiUploadDuotone,
+  PiUserDuotone,
+} from "react-icons/pi";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -119,7 +126,7 @@ const AuthPage = () => {
             </div>
 
             <motion.p
-              className="text-xs mt-6 italic"
+              className="text-xs mt-6 text-center italic text-amber-500"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
@@ -130,22 +137,24 @@ const AuthPage = () => {
           </div>
 
           {/* Right Panel - Auth Form */}
-          <div className="md:w-1/2 p-12">
+          <div className="md:w-1/2 p-12 mt-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.4, ease: "easeOut" }}
             >
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                {isLogin ? "Sign in to your account" : "Create your account"}
+              <h2 className="text-3xl font-extrabold text-center text-primary-light mb-2">
+                {isLogin
+                  ? "Sign In to Continue Application"
+                  : "Create Your Applicant Account"}
               </h2>
-              <p className="text-gray-600 mb-8">
+              <p className="text-gray-600 mb-6 text-center">
                 {isLogin
                   ? "Don't have an account?"
                   : "Already have an account?"}
                 <button
                   onClick={() => setIsLogin(!isLogin)}
-                  className="font-medium text-indigo-600 hover:text-indigo-500 ml-1 transition-colors"
+                  className="font-bold font-nunito text-amber-600  hover:text-amber-700 ml-1 transition-colors"
                 >
                   {isLogin ? "Sign up" : "Sign in"}
                 </button>
@@ -153,7 +162,7 @@ const AuthPage = () => {
             </motion.div>
 
             <motion.form
-              className="space-y-6"
+              className="space-y-5"
               onSubmit={handleSubmit}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -170,20 +179,20 @@ const AuthPage = () => {
                   >
                     <label
                       htmlFor="name"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-bold font-nunito text-gray-700 mb-1"
                     >
                       Full Name
                     </label>
                     <div className="relative rounded-md shadow-sm">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <TbUserCircle className="h-5 w-5 text-gray-400" />
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <PiUserDuotone className="h-5 w-5 text-gray-500" />
                       </div>
                       <input
                         id="name"
                         name="name"
                         type="text"
                         required
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out"
+                        className="block w-full pl-12 pr-3 py-2.5 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-primary-extralight focus:border-primary-extralight sm:text-sm transition duration-150 ease-in-out"
                         placeholder="John Doe"
                         value={formState.name}
                         onChange={handleInputChange}
@@ -196,13 +205,13 @@ const AuthPage = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-bold font-nunito text-gray-700 mb-1"
                 >
-                  Email address
+                  Your Email address
                 </label>
                 <div className="relative rounded-md shadow-sm">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <TbMail className="h-5 w-5 text-gray-400" />
+                    <TbMail className="h-5 w-5 text-gray-500" />
                   </div>
                   <input
                     id="email"
@@ -210,7 +219,7 @@ const AuthPage = () => {
                     type="email"
                     autoComplete="email"
                     required
-                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out"
+                    className="block w-full pl-12 pr-3 py-2.5 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-primary-extralight focus:border-primary-extralight sm:text-sm transition duration-150 ease-in-out"
                     placeholder="you@example.com"
                     value={formState.email}
                     onChange={handleInputChange}
@@ -221,13 +230,13 @@ const AuthPage = () => {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-bold font-nunito text-gray-700 mb-1"
                 >
                   Password
                 </label>
                 <div className="relative rounded-md shadow-sm">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <TbLock className="h-5 w-5 text-gray-400" />
+                    <PiPasswordDuotone className="h-5 w-5 text-gray-600" />
                   </div>
                   <input
                     id="password"
@@ -235,21 +244,21 @@ const AuthPage = () => {
                     type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
                     required
-                    className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out"
+                    className="block w-full pl-12 pr-3 py-2.5 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-primary-extralight focus:border-primary-extralight sm:text-sm transition duration-150 ease-in-out"
                     placeholder="••••••••"
                     value={formState.password}
                     onChange={handleInputChange}
                   />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                  <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="text-gray-400 hover:text-gray-500 focus:outline-none focus:text-gray-500 transition ease-in-out duration-150"
                     >
                       {showPassword ? (
-                        <TbEyeOff className="h-5 w-5" />
+                        <FaEyeSlash className="h-5 w-5" />
                       ) : (
-                        <TbEye className="h-5 w-5" />
+                        <FaEye className="h-5 w-5" />
                       )}
                     </button>
                   </div>
@@ -259,12 +268,12 @@ const AuthPage = () => {
               <div>
                 <motion.button
                   type="submit"
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-extralight transition duration-150 ease-in-out"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                    <TbLock className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" />
+                    <PiSignInDuotone className="h-5 w-5 text-gray-100 group-hover:text-gray-300" />
                   </span>
                   {isLogin ? "Sign in" : "Create account"}
                   <TbChevronRight className="ml-2 h-5 w-5" />
@@ -283,7 +292,7 @@ const AuthPage = () => {
                   <div className="w-full border-t border-gray-300"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">
+                  <span className="px-2 bg-gray-100/60 text-gray-500">
                     Or continue with
                   </span>
                 </div>
@@ -291,20 +300,31 @@ const AuthPage = () => {
 
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <motion.button
-                  className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-150"
+                  className="w-full inline-flex justify-center items-center px-4 py-2 rounded-lg shadow-sm bg-white text-gray-500 border border-gray-300/60 hover:bg-gray-50 transition-colors
+ duration-150"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  <TbBrandGoogle className="h-5 w-5 mr-2 text-red-500" />
-                  <span>Google</span>
+                  <img
+                    className="h-5 w-5 mr-2"
+                    src="https://www.svgrepo.com/show/475656/google-color.svg"
+                    alt="Google logo"
+                  />
+                  <span className="text-sm font-medium">Google</span>
                 </motion.button>
                 <motion.button
-                  className="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-150"
+                  className="w-full inline-flex justify-center items-center px-4 py-2 rounded-lg shadow-sm bg-white text-gray-500 border border-gray-300 hover:bg-gray-50 transition-colors
+ duration-150"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  <TbBrandLinkedin className="h-5 w-5 mr-2 text-blue-600" />
-                  <span>LinkedIn</span>
+                  <img
+                    className="h-5 w-5 mr-2"
+                    src="https://www.svgrepo.com/show/448234/linkedin.svg"
+                    alt="LinkedIn logo"
+                  />
+
+                  <span className="text-sm  font-medium">LinkedIn</span>
                 </motion.button>
               </div>
             </motion.div>
